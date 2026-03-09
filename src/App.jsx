@@ -604,7 +604,26 @@ ${(targetEntry.positive || []).join(", ") || ""}`;
               ))}
             </div>
           </div>
+<div className="card">
+  <div className="card-title">백업</div>
+  <div className="card-subtitle">폰을 바꾸기 전에 백업 파일을 저장해두면 복원할 수 있어.</div>
 
+  <div className="row-btns" style={{ marginTop: 12, flexWrap: "wrap" }}>
+    <BaseButton className="outline-btn" onClick={handleExportBackup}>
+      백업 다운로드
+    </BaseButton>
+
+    <label className="outline-btn" style={{ cursor: "pointer" }}>
+      백업 복원
+      <input
+        type="file"
+        accept="application/json"
+        onChange={handleImportBackup}
+        style={{ display: "none" }}
+      />
+    </label>
+  </div>
+</div>
           <MonthCalendar
             records={records}
             currentDate={currentDate}
