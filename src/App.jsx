@@ -578,7 +578,7 @@ ${(targetEntry.positive || []).join(", ") || ""}`;
             <p className="hero-subtitle">링크 열면 바로 쓰는 감정 기록</p>
             <div className="hero-copy">
               <div>내 브라우저에만 저장됨</div>
-              <div className="muted-line">친구와 링크는 같이 써도, 기록은 각자 자기 기기 안에만 저장돼.</div>
+              <div className="muted-line">기기가 바뀔 경우 연동 불가 </div>
             </div>
 
             {copyMessage ? (
