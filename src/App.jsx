@@ -13,36 +13,228 @@ import {
 import "./index.css";
 
 const NEGATIVE_GROUPS = [
-  { key: "fear", title: "걱정 / 두려움", items: ["걱정되는", "암담한", "염려되는", "근심하는", "신경 쓰이는", "무서운", "겁나는", "두려운", "주눅 든"] },
-  { key: "anxiety", title: "불안 / 긴장", items: ["불안한", "초조한", "긴장된", "조마조마한", "불편한"] },
-  { key: "awkward", title: "곤란 / 어색함", items: ["난처한", "쑥스러운", "괴로운", "답답한", "갑갑한", "서먹한", "어색한", "찝찝한"] },
-  { key: "sadness", title: "슬픔 / 상실", items: ["슬픈", "그리운", "우울한", "막막한", "서글픈", "서러운", "울적한", "참담한", "비참한", "속상한"] },
-  { key: "lonely", title: "외로움", items: ["외로운", "고독한", "공허한", "쓸쓸한"] },
-  { key: "fatigue", title: "무기력 / 피로", items: ["무력한", "무기력한", "침울한", "피곤한", "고된", "따분한", "지겨운", "절망스러운", "실망스러운", "좌절한", "힘든"] },
-  { key: "boredom", title: "지루함", items: ["무료한", "지친", "심심한", "질린", "지루한"] },
-  { key: "confused", title: "당황 / 혼란", items: ["혼란스러운", "놀란", "민망한", "당황한", "부끄러운"] },
-  { key: "anger", title: "분노", items: ["화나는", "분한", "억울한", "짜증나는"] },
+  {
+    key: "fear",
+    title: "걱정 / 두려움",
+    items: [
+      "걱정되는",
+      "암담한",
+      "염려되는",
+      "근심하는",
+      "신경 쓰이는",
+      "무서운",
+      "겁나는",
+      "두려운",
+      "주눅 든",
+    ],
+  },
+  {
+    key: "anxiety",
+    title: "불안 / 긴장",
+    items: ["불안한", "초조한", "긴장된", "조마조마한", "불편한"],
+  },
+  {
+    key: "awkward",
+    title: "곤란 / 어색함",
+    items: [
+      "난처한",
+      "쑥스러운",
+      "괴로운",
+      "답답한",
+      "갑갑한",
+      "서먹한",
+      "어색한",
+      "찝찝한",
+    ],
+  },
+  {
+    key: "sadness",
+    title: "슬픔 / 상실",
+    items: [
+      "슬픈",
+      "그리운",
+      "우울한",
+      "막막한",
+      "서글픈",
+      "서러운",
+      "울적한",
+      "참담한",
+      "비참한",
+      "속상한",
+    ],
+  },
+  {
+    key: "lonely",
+    title: "외로움",
+    items: ["외로운", "고독한", "공허한", "쓸쓸한"],
+  },
+  {
+    key: "fatigue",
+    title: "무기력 / 피로",
+    items: [
+      "무력한",
+      "무기력한",
+      "침울한",
+      "피곤한",
+      "고된",
+      "따분한",
+      "지겨운",
+      "절망스러운",
+      "실망스러운",
+      "좌절한",
+      "힘든",
+    ],
+  },
+  {
+    key: "boredom",
+    title: "지루함",
+    items: ["무료한", "지친", "심심한", "질린", "지루한"],
+  },
+  {
+    key: "confused",
+    title: "당황 / 혼란",
+    items: ["혼란스러운", "놀란", "민망한", "당황한", "부끄러운"],
+  },
+  {
+    key: "anger",
+    title: "분노",
+    items: ["화나는", "분한", "억울한", "짜증나는"],
+  },
 ];
 
 const NEED_GROUPS = [
-  { key: "autonomy", title: "자율성", items: ["자신의 꿈·목표·가치를 선택할 자유", "목표를 이루는 방법을 스스로 선택할 자유"] },
-  { key: "survival", title: "신체적 / 생존", items: ["공기", "음식", "물", "주거", "휴식", "수면", "안전", "신체적 접촉", "편안함", "운동"] },
-  { key: "social", title: "사회적 / 정서", items: ["소통", "관계", "우정", "존중", "공감", "이해", "지지", "협력", "사랑", "관심", "소속감", "신뢰"] },
-  { key: "play", title: "놀이 / 재미", items: ["즐거움", "재미", "유머", "웃음"] },
-  { key: "meaning", title: "삶의 의미", items: ["기여", "도전", "발견", "보람", "의미", "희망", "열정"] },
-  { key: "truth", title: "진실성", items: ["정직", "진실", "개성", "자기존중", "비전", "꿈"] },
-  { key: "peace", title: "아름다움 / 평화", items: ["아름다움", "평화", "조화", "질서", "평온함"] },
-  { key: "selfRealization", title: "자아구현", items: ["성취", "배움", "성장", "창조성", "자기표현", "자신감"] },
+  {
+    key: "autonomy",
+    title: "자율성",
+    items: [
+      "자신의 꿈·목표·가치를 선택할 자유",
+      "목표를 이루는 방법을 스스로 선택할 자유",
+    ],
+  },
+  {
+    key: "survival",
+    title: "신체적 / 생존",
+    items: [
+      "공기",
+      "음식",
+      "물",
+      "주거",
+      "휴식",
+      "수면",
+      "안전",
+      "신체적 접촉",
+      "편안함",
+      "운동",
+    ],
+  },
+  {
+    key: "social",
+    title: "사회적 / 정서",
+    items: [
+      "소통",
+      "관계",
+      "우정",
+      "존중",
+      "공감",
+      "이해",
+      "지지",
+      "협력",
+      "사랑",
+      "관심",
+      "소속감",
+      "신뢰",
+    ],
+  },
+  {
+    key: "play",
+    title: "놀이 / 재미",
+    items: ["즐거움", "재미", "유머", "웃음"],
+  },
+  {
+    key: "meaning",
+    title: "삶의 의미",
+    items: ["기여", "도전", "발견", "보람", "의미", "희망", "열정"],
+  },
+  {
+    key: "truth",
+    title: "진실성",
+    items: ["정직", "진실", "개성", "자기존중", "비전", "꿈"],
+  },
+  {
+    key: "peace",
+    title: "아름다움 / 평화",
+    items: ["아름다움", "평화", "조화", "질서", "평온함"],
+  },
+  {
+    key: "selfRealization",
+    title: "자아구현",
+    items: ["성취", "배움", "성장", "창조성", "자기표현", "자신감"],
+  },
 ];
 
 const POSITIVE_GROUPS = [
-  { key: "gratitude", title: "감사 / 기쁨", items: ["고마운", "감사한", "기쁜", "반가운", "행복한", "편안함", "편안한", "홀가분한", "느긋한", "차분한", "평온한", "고요한"] },
-  { key: "energy", title: "활력", items: ["활기찬", "신나는", "짜릿한", "기력이 넘치는", "힘이 솟는"] },
-  { key: "hope", title: "희망 / 기대", items: ["희망에 찬", "기대에 부푼", "자신감 있는"] },
-  { key: "warmth", title: "사랑 / 따뜻함", items: ["사랑하는", "친근한", "훈훈한", "따뜻한", "포근한"] },
-  { key: "satisfaction", title: "만족 / 성취", items: ["뿌듯한", "만족스러운", "상쾌한", "개운한", "후련한", "든든한"] },
-  { key: "moved", title: "감동", items: ["감동받은", "뭉클한", "감격스러운", "벅찬", "환희에 찬", "황홀한"] },
-  { key: "interest", title: "흥미", items: ["흥미로운", "재미있는"] },
+  {
+    key: "gratitude",
+    title: "감사 / 기쁨",
+    items: [
+      "고마운",
+      "감사한",
+      "기쁜",
+      "반가운",
+      "행복한",
+      "편안함",
+      "편안한",
+      "홀가분한",
+      "느긋한",
+      "차분한",
+      "평온한",
+      "고요한",
+    ],
+  },
+  {
+    key: "energy",
+    title: "활력",
+    items: ["활기찬", "신나는", "짜릿한", "기력이 넘치는", "힘이 솟는"],
+  },
+  {
+    key: "hope",
+    title: "희망 / 기대",
+    items: ["희망에 찬", "기대에 부푼", "자신감 있는"],
+  },
+  {
+    key: "warmth",
+    title: "사랑 / 따뜻함",
+    items: ["사랑하는", "친근한", "훈훈한", "따뜻한", "포근한"],
+  },
+  {
+    key: "satisfaction",
+    title: "만족 / 성취",
+    items: [
+      "뿌듯한",
+      "만족스러운",
+      "상쾌한",
+      "개운한",
+      "후련한",
+      "든든한",
+    ],
+  },
+  {
+    key: "moved",
+    title: "감동",
+    items: [
+      "감동받은",
+      "뭉클한",
+      "감격스러운",
+      "벅찬",
+      "환희에 찬",
+      "황홀한",
+    ],
+  },
+  {
+    key: "interest",
+    title: "흥미",
+    items: ["흥미로운", "재미있는"],
+  },
 ];
 
 const RECORDS_KEY = "nawa-prayer-talk-records-v3";
@@ -59,16 +251,22 @@ const THEMES = [
 
 const todayString = () => {
   const d = new Date();
-  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(
+    d.getDate()
+  ).padStart(2, "0")}`;
 };
 
 const nowTimeString = () => {
   const d = new Date();
-  return `${String(d.getHours()).padStart(2, "0")}:${String(d.getMinutes()).padStart(2, "0")}`;
+  return `${String(d.getHours()).padStart(2, "0")}:${String(
+    d.getMinutes()
+  ).padStart(2, "0")}`;
 };
 
 const ymd = (d) =>
-  `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+  `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(
+    d.getDate()
+  ).padStart(2, "0")}`;
 
 const parseYmd = (s) => {
   const [y, m, d] = (s || todayString()).split("-").map(Number);
@@ -172,9 +370,7 @@ function BaseInput(props) {
 }
 
 function BaseTextarea(props) {
-  return (
-    <textarea {...props} className={`field textarea ${props.className || ""}`} />
-  );
+  return <textarea {...props} className={`field textarea ${props.className || ""}`} />;
 }
 
 function BaseCheckbox({ checked, onChange, id }) {
@@ -189,13 +385,7 @@ function BaseCheckbox({ checked, onChange, id }) {
   );
 }
 
-function MonthCalendar({
-  records,
-  currentDate,
-  onSelectDate,
-  monthCursor,
-  setMonthCursor,
-}) {
+function MonthCalendar({ records, currentDate, onSelectDate, monthCursor, setMonthCursor }) {
   const year = monthCursor.getFullYear();
   const month = monthCursor.getMonth();
   const first = new Date(year, month, 1);
@@ -257,16 +447,14 @@ function MonthCalendar({
               className={`calendar-day ${isSelected ? "selected" : ""}`}
             >
               <span>{dateObj.getDate()}</span>
-              <span className={`day-count ${count > 0 ? "visible" : ""}`}>
-                {count}개
-              </span>
+              <span className={`day-count ${count > 0 ? "visible" : ""}`}>{count}개</span>
             </button>
           );
         })}
       </div>
 
       <div className="helper-text">
-        작성한 날은 개수로 표시돼. 날짜를 누르면 그날 기록을 볼 수 있어.
+        작성한 날은 개수로 보여줘요. 날짜를 누르면 그날의 기록을 볼 수 있어요.
       </div>
     </div>
   );
@@ -304,7 +492,7 @@ function EntryList({
 
       <div className="entry-list">
         {entries.length === 0 ? (
-          <div className="helper-text">이 날짜에는 아직 기록이 없어.</div>
+          <div className="helper-text">이 날짜에는 아직 기록이 없어요.</div>
         ) : (
           entries.map((entry, idx) => {
             const itemKey = `${entry.id}::${idx}`;
@@ -371,10 +559,7 @@ function EntryList({
                     >
                       <Pencil size={14} />
                     </BaseButton>
-                    <BaseButton
-                      className="ghost-btn tiny-btn"
-                      onClick={() => onCopy(entry)}
-                    >
+                    <BaseButton className="ghost-btn tiny-btn" onClick={() => onCopy(entry)}>
                       복사
                     </BaseButton>
                     <BaseButton
@@ -406,13 +591,7 @@ function SectionCard({ title, children, subtitle }) {
   );
 }
 
-function CollapsibleGroup({
-  title,
-  items,
-  selected,
-  onToggle,
-  defaultOpen = false,
-}) {
+function CollapsibleGroup({ title, items, selected, onToggle, defaultOpen = false }) {
   const [open, setOpen] = useState(defaultOpen);
 
   return (
@@ -581,23 +760,23 @@ export default function App() {
 부정적 감정:
 ${(targetEntry.negative || []).join(", ") || ""}
 
-무슨 일이 있었나:
+어떤 일이 있었을까:
 ${targetEntry.reason || ""}
 
-감정 공감:
+그래서 그런 마음이 들었구나:
 ${targetEntry.empathy || ""}
 
-바라는 것 / 욕구:
+마음속에서는 무엇을 바랐을까:
 ${(targetEntry.needs || []).join(", ") || ""}
 ${targetEntry.needsOtherChecked ? `기타: ${targetEntry.needsOtherText || ""}` : ""}
 
-욕구 결핍에 대한 공감:
+그렇구나:
 ${targetEntry.needsEmpathy || ""}
 
-상대에게 하고 싶은 말:
+마음속에 있던 말:
 ${targetEntry.message || ""}
 
-나에게 해주고 싶은 말:
+지금의 나에게 어떤 말을 해주고 싶어:
 ${targetEntry.selfMessage || ""}
 
 할 수 없는 것:
@@ -609,7 +788,7 @@ ${targetEntry.canDo || ""}
 기도:
 ${targetEntry.prayer || ""}
 
-지금 느끼는 감정:
+지금 마음은 어때:
 ${(targetEntry.positive || []).join(", ") || ""}`;
 
     try {
@@ -676,11 +855,9 @@ ${(targetEntry.positive || []).join(", ") || ""}`;
     reader.onload = (e) => {
       try {
         const data = JSON.parse(e.target.result);
-
         if (!data.records) throw new Error();
 
         const normalized = normalizeRecords(data.records);
-
         setRecords(normalized);
         saveRecords(normalized);
 
@@ -712,11 +889,13 @@ ${(targetEntry.positive || []).join(", ") || ""}`;
               </div>
             </div>
 
-            <p className="hero-subtitle">링크 열면 바로 쓰는 감정 기록</p>
+            <p className="hero-subtitle">오늘의 마음을 천천히 들어보는 시간</p>
 
             <div className="hero-copy">
-              <div>내 브라우저에만 저장됨 [기기가 바뀔 경우 연동 안됨]</div>
-              <div className="muted-line">복사하여 다른 곳에 저장하는 방식 추천</div>
+              <div>기록은 이 브라우저에 저장돼요</div>
+              <div className="muted-line">
+                중요한 기록은 복사해서 따로 보관해두면 좋아요
+              </div>
             </div>
 
             {copyMessage ? (
@@ -728,8 +907,6 @@ ${(targetEntry.positive || []).join(", ") || ""}`;
 
           <div className="card">
             <div className="card-title">테마</div>
-            <div className="card-subtitle" />
-
             <div className="theme-grid">
               {THEMES.map((item) => (
                 <button
@@ -747,7 +924,7 @@ ${(targetEntry.positive || []).join(", ") || ""}`;
           <div className="card">
             <div className="card-title">백업</div>
             <div className="card-subtitle">
-              기기 변경 전 백업 파일을 저장해두면 복원 가능.
+              기기 변경 전에 백업 파일을 저장해두면 다시 불러올 수 있어요.
             </div>
 
             <div className="row-btns" style={{ marginTop: 12, flexWrap: "wrap" }}>
@@ -815,15 +992,18 @@ ${(targetEntry.positive || []).join(", ") || ""}`;
         </div>
 
         <div className="right-col">
-          <SectionCard title="▶ 기록 제목" subtitle="대화 제목">
+          <SectionCard title="✨ 오늘의 마음" subtitle="지금의 마음에 작은 이름을 붙여볼까">
             <BaseInput
               value={entry.title}
               onChange={(e) => updateEntry({ title: e.target.value })}
-              placeholder="예: 오늘의 자기 대화"
+              placeholder="예: 오늘의 마음"
             />
           </SectionCard>
 
-          <SectionCard title="▶ 기분이 어때?" subtitle="부정적 감정 찾기">
+          <SectionCard
+            title="💭 지금 마음이 어때"
+            subtitle="지금 느껴지는 감정을 골라보자"
+          >
             <div className="stack">
               {NEGATIVE_GROUPS.map((group, idx) => (
                 <CollapsibleGroup
@@ -840,7 +1020,11 @@ ${(targetEntry.positive || []).join(", ") || ""}`;
             </div>
           </SectionCard>
 
-          <SectionCard title="▶ 무엇 때문에?" subtitle="부정적 감정이 드는 이유 설명해줘">
+          <SectionCard
+            title="🌿 어떤 일이 있었을까"
+            subtitle={`내 마음이 이렇게 느낀 이유를
+천천히 적어보자`}
+          >
             <BaseTextarea
               value={entry.reason}
               onChange={(e) => updateEntry({ reason: e.target.value })}
@@ -848,9 +1032,12 @@ ${(targetEntry.positive || []).join(", ") || ""}`;
           </SectionCard>
 
           <SectionCard
-            title="▶ 그래서 그런 감정이 들었구나"
-            subtitle={`그럴수 있지 이해돼~~
-(감정을 알아주고 공감하기-예) 친구가 연락이 안되어서 걱정이 되었구나`}
+            title="🤍 그래서 그런 마음이 들었구나"
+            subtitle={`그럴 수 있어
+그 상황이라면 누구라도 그렇게 느낄 수 있어
+
+예: 친구가 연락이 안 되어서
+괜히 마음이 쓰이고 걱정이 되었구나`}
           >
             <BaseTextarea
               value={entry.empathy}
@@ -858,7 +1045,11 @@ ${(targetEntry.positive || []).join(", ") || ""}`;
             />
           </SectionCard>
 
-          <SectionCard title="▶ 그럼 네가 그 상대(또는 자신)에게 바라는 것은 무엇이야?">
+          <SectionCard
+            title="🌱 마음속에서는 무엇을 바랐을까"
+            subtitle={`그 순간
+내 마음은 무엇을 바라보고 있었을까`}
+          >
             <div className="stack">
               {NEED_GROUPS.map((group) => (
                 <CollapsibleGroup
@@ -884,33 +1075,38 @@ ${(targetEntry.positive || []).join(", ") || ""}`;
                       })
                     }
                   />
-                  <span>기타 항목 사용</span>
+                  <span>직접 적기</span>
                 </label>
 
                 <BaseInput
                   value={entry.needsOtherText}
-                  onChange={(e) =>
-                    updateEntry({ needsOtherText: e.target.value })
-                  }
-                  placeholder="기타 내용을 적어줘"
+                  onChange={(e) => updateEntry({ needsOtherText: e.target.value })}
+                  placeholder="떠오르는 마음을 적어보자"
                 />
               </div>
             </div>
           </SectionCard>
 
           <SectionCard
-            title="▶ 그렇구나~"
-            subtitle={`(욕구 결핍으로 인한 부정적 감정에 대한 공감하기)
-예: 친구가 연락을 잘 해주기를 바랐는데 안되니까 속상하고 답답했구나`}
+            title="🍃 그렇구나"
+            subtitle={`그 마음이 채워지지 않아서
+속상했겠구나
+
+예: 친구가 연락을 해주기를 바랐는데
+그렇지 않아서 서운했구나`}
           >
             <BaseTextarea
               value={entry.needsEmpathy}
               onChange={(e) => updateEntry({ needsEmpathy: e.target.value })}
-              placeholder="욕구가 채워지지 않아서 느낀 감정을 공감해줘"
+              placeholder="그 마음을 다정하게 바라봐주자"
             />
           </SectionCard>
 
-          <SectionCard title="▶ 네가 상대에게 하고 싶은 말은 뭐야?">
+          <SectionCard
+            title="🕊 마음속에 있던 말"
+            subtitle={`그때 하지 못했던 말을
+편하게 적어보자`}
+          >
             <BaseTextarea
               value={entry.message}
               onChange={(e) => updateEntry({ message: e.target.value })}
@@ -918,8 +1114,8 @@ ${(targetEntry.positive || []).join(", ") || ""}`;
           </SectionCard>
 
           <SectionCard
-            title="▶ 너는 자신에게 어떤 말을 해주고 싶어?"
-            subtitle="자신에게 공감, 지지, 격려, 응원, 칭찬, 사랑, 축복의 말을 해줘."
+            title="🌼 지금의 나에게"
+            subtitle="어떤 말을 해주고 싶어"
           >
             <BaseTextarea
               value={entry.selfMessage}
@@ -928,8 +1124,9 @@ ${(targetEntry.positive || []).join(", ") || ""}`;
           </SectionCard>
 
           <SectionCard
-            title="▶ 네가 원하는 것을 이루기 위해 무엇을 할 수 있을까?"
-            subtitle="내가 할 수 없는 일과 내가 할 수 있는 일을 구분하여 실천 가능한 것을 조금씩 실천해보자."
+            title="🌷 지금 내가 할 수 있는 것"
+            subtitle={`바꿀 수 없는 것은 잠시 내려놓고
+지금 내가 할 수 있는 것을 찾아보자`}
           >
             <div className="two-col">
               <div className="stack">
@@ -951,19 +1148,21 @@ ${(targetEntry.positive || []).join(", ") || ""}`;
           </SectionCard>
 
           <SectionCard
-            title="▶ 기도"
-            subtitle="상대방은 하나님만 변화시킬 수 있으니 하나님께 맡기고 기도하며 기다리고, 자신의 변화와 성장을 위해 계획한 것을 실천하도록 도와달라고 기도하기"
+            title="🙏 기도"
+            subtitle={`내 힘으로 바꿀 수 없는 것은 하나님께 맡기고
+내가 한 걸음 나아갈 수 있도록
+도움을 구해보자`}
           >
             <BaseTextarea
-              value={entry.prayer || ""}
+              value={entry.prayer}
               onChange={(e) => updateEntry({ prayer: e.target.value })}
-              placeholder="기도 내용을 적어줘"
+              placeholder="기도하고 싶은 마음을 적어보자"
             />
           </SectionCard>
 
           <SectionCard
-            title="▶ 지금은 기분이 어때?"
-            subtitle="감정의 종류에서 보고 긍정적인 감정이면 잘 된것이고 잘 안되었으면 다시 욕구탐색과 하고싶은 말을 말로 표현하면 도움이 됨. 여전히 부정적인 감정이 해결되지 않았다면 무의식에 해결되지않은 많은 감정이 남아있어서 그럴수 있음"
+            title="🌙 지금 마음은 어때"
+            subtitle="조금 달라진 마음이 있을까"
           >
             <div className="stack">
               {POSITIVE_GROUPS.map((group) => (
@@ -992,9 +1191,7 @@ ${(targetEntry.positive || []).join(", ") || ""}`;
 
                 setRecords((old) => {
                   const currentDay = old[updatedEntry.date] || [];
-                  const exists = currentDay.some(
-                    (e) => e.id === selectedEntryId
-                  );
+                  const exists = currentDay.some((e) => e.id === selectedEntryId);
 
                   const nextDay = exists
                     ? currentDay.map((e) =>
