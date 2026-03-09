@@ -577,8 +577,8 @@ ${(targetEntry.positive || []).join(", ") || ""}`;
             </div>
             <p className="hero-subtitle">링크 열면 바로 쓰는 감정 기록</p>
             <div className="hero-copy">
-              <div>내 브라우저에만 저장됨</div>
-              <div className="muted-line">기기가 바뀔 경우 연동 불가 </div>
+              <div>내 브라우저에만 저장됨 [기기가 바뀔 경우 연동 안됨]</div>
+              <div className="muted-line"> 복사하여 다른 곳에 저장하는 방식 추천함  </div>
             </div>
 
             {copyMessage ? (
