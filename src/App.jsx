@@ -449,6 +449,7 @@ export default function App() {
   };
 
   const handleCopyEntry = async (targetEntry) => {
+  
     const text = `제목: ${targetEntry.title || ""}
 날짜: ${targetEntry.date} ${targetEntry.timeLabel || ""}
 
