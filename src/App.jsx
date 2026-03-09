@@ -590,7 +590,7 @@ ${(targetEntry.positive || []).join(", ") || ""}`;
 
           <div className="card">
             <div className="card-title">테마</div>
-            <div className="card-subtitle">원하는 분위기로 바꿔서 기록해봐.</div>
+            <div className="card-subtitle"></div>
 
             <div className="theme-grid">
               {THEMES.map((item) => (
