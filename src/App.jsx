@@ -43,9 +43,9 @@ const POSITIVE_GROUPS = [
   { key: "interest", title: "흥미", items: ["흥미로운", "재미있는"] },
 ];
 
-const RECORDS_KEY = "prayer-talk-records-v1";
-const UI_KEY = "prayer-talk-ui-v1";
-const THEME_KEY = "prayer-talk-theme-v1";
+const RECORDS_KEY = "nawa-prayer-talk-records-v1";
+const UI_KEY = "nawa-prayer-talk-ui-v1";
+const THEME_KEY = "nawa-prayer-talk-theme-v1";
 
 const THEMES = [
   { key: "cream", label: "🍦 크림" },
@@ -250,6 +250,7 @@ function MonthCalendar({ records, currentDate, onSelectDate, theme, monthCursor,
           const dateKey = ymd(dateObj);
           const count = (records[dateKey] || []).length;
           const isSelected = dateKey === currentDate;
+
           return (
             <button
               key={dateKey}
@@ -304,6 +305,7 @@ function EntryList({ entries, selectedEntryId, onSelect, onCreate, onDelete, onC
           entries.map((entry, idx) => {
             const itemKey = `${entry.id}::${idx}`;
             const isEditing = editingKey === itemKey;
+
             return (
               <div
                 key={`${entry.id}-${idx}`}
@@ -394,6 +396,7 @@ function SectionCard({ title, children, subtitle, theme }) {
 
 function CollapsibleGroup({ title, items, selected, onToggle, defaultOpen = false, theme }) {
   const [open, setOpen] = useState(defaultOpen);
+
   return (
     <div className={`overflow-hidden rounded-2xl border ${theme === "night" ? "border-[#3a3d57] bg-[#232537]" : "border-slate-200 bg-white"}`}>
       <button type="button" onClick={() => setOpen((v) => !v)} className="flex w-full items-center justify-between px-4 py-4 text-left">
@@ -422,7 +425,7 @@ function CollapsibleGroup({ title, items, selected, onToggle, defaultOpen = fals
 }
 
 export default function App() {
-  const [theme, setTheme] = useState(() => localStorage.getItem(THEME_KEY) || "cream");
+  const [theme, setTheme] = useState(() => localStorage.getItem(THEME_KEY) || "lavender");
   const [records, setRecords] = useState(() => readRecords());
   const [currentDate, setCurrentDate] = useState(() => readUi().currentDate || todayString());
   const [selectedEntryId, setSelectedEntryId] = useState(() => readUi().selectedEntryId || "");
@@ -477,8 +480,8 @@ export default function App() {
         return next;
       });
       setSavedMessage("자동 저장됨");
-      window.clearTimeout(window.__nawaSaveMessageTimer);
-      window.__nawaSaveMessageTimer = window.setTimeout(() => setSavedMessage(""), 800);
+      window.clearTimeout(window.__nawaPrayerSaveMessageTimer);
+      window.__nawaPrayerSaveMessageTimer = window.setTimeout(() => setSavedMessage(""), 800);
     }, 900);
 
     return () => {
@@ -583,7 +586,7 @@ ${(targetEntry.positive || []).join(", ") || ""}`;
 
             <div>
               <div className={`text-sm ${mutedClass(theme)}`}>내 브라우저에만 저장됨</div>
-              <div className={`mt-2 text-xs ${mutedClass(theme)}`}>링크는 함께 써도 기록은 각자 자기 기기 안에만 저장돼.</div>
+              <div className={`mt-2 text-xs ${mutedClass(theme)}`}>친구와 링크는 같이 써도, 기록은 각자 자기 기기 안에만 저장돼.</div>
             </div>
 
             {copyMessage ? (
