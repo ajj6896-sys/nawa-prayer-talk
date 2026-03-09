@@ -499,7 +499,70 @@ ${(targetEntry.positive || []).join(", ") || ""}`;
       copyMessageTimer.current = setTimeout(() => setCopyMessage(""), 1500);
     }
   };
+  // 🔹 백업 다운로드
+  const handleExportBackup = () => {
+    try {
+      const backupData = {
+        records,
+        currentDate,
+        selectedEntryId,
+        theme
+      };
 
+      const blob = new Blob(
+        [JSON.stringify(backupData, null, 2)],
+        { type: "application/json" }
+      );
+
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "maeum-backup.json";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+
+      setSavedMessage("백업 파일 저장됨");
+      setTimeout(() => setSavedMessage(""), 1500);
+
+    } catch {
+      setSavedMessage("백업 실패");
+      setTimeout(() => setSavedMessage(""), 1500);
+    }
+  };
+
+  // 🔹 백업 복원
+  const handleImportBackup = (event) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+
+    reader.onload = (e) => {
+      try {
+        const data = JSON.parse(e.target.result);
+
+        if (!data.records) throw new Error();
+
+        setRecords(data.records);
+        saveRecords(data.records);
+
+        if (data.currentDate) setCurrentDate(data.currentDate);
+        if (data.selectedEntryId) setSelectedEntryId(data.selectedEntryId);
+        if (data.theme) setTheme(data.theme);
+
+        setSavedMessage("백업 복원 완료");
+        setTimeout(() => setSavedMessage(""), 1500);
+
+      } catch {
+        setSavedMessage("백업 파일 오류");
+        setTimeout(() => setSavedMessage(""), 1500);
+      }
+    };
+
+    reader.readAsText(file);
+  };
   return (
     <div className={appThemeClass(theme)}>
       <div className="page-wrap">
