@@ -607,7 +607,7 @@ ${(targetEntry.positive || []).join(", ") || ""}`;
           </div>
 <div className="card">
   <div className="card-title">백업</div>
-  <div className="card-subtitle">폰을 바꾸기 전에 백업 파일을 저장해두면 복원할 수 있어.</div>
+  <div className="card-subtitle">기기 변경 전 백업 파일을 저장해두면 복원 가능.</div>
 
   <div className="row-btns" style={{ marginTop: 12, flexWrap: "wrap" }}>
     <BaseButton className="outline-btn" onClick={handleExportBackup}>
@@ -654,7 +654,7 @@ ${(targetEntry.positive || []).join(", ") || ""}`;
               if (selectedEntryId === targetEntry.id) {
                 setEntry((prev) => ({ ...prev, title: nextTitle, updatedAt: new Date().toISOString() }));
               }
-              setSavedMessage("제목을 수정했어");
+              setSavedMessage("제목 수정 완료");
               setTimeout(() => setSavedMessage(""), 1200);
             }}
             currentDate={currentDate}
@@ -662,7 +662,7 @@ ${(targetEntry.positive || []).join(", ") || ""}`;
         </div>
 
         <div className="right-col">
-          <SectionCard title="▶ 기록 제목" subtitle="한날에 여러 번 쓸 수 있어서 구분용 제목을 적어두면 좋아.">
+          <SectionCard title="▶ 기록 제목" subtitle="대화 제목">
             <BaseInput
               value={entry.title}
               onChange={(e) => updateEntry({ title: e.target.value })}
@@ -670,7 +670,7 @@ ${(targetEntry.positive || []).join(", ") || ""}`;
             />
           </SectionCard>
 
-          <SectionCard title="▶ 기분이 어때?" subtitle="감정표는 하나도 빠뜨리지 않고 모두 넣었어. 눌러서 펼치면 돼.">
+          <SectionCard title="▶ 기분이 어때?" subtitle="부정적 감정 찾기">
             <div className="stack">
               {NEGATIVE_GROUPS.map((group, idx) => (
                 <CollapsibleGroup
@@ -685,11 +685,13 @@ ${(targetEntry.positive || []).join(", ") || ""}`;
             </div>
           </SectionCard>
 
-          <SectionCard title="▶ 무엇 때문에?">
+          <SectionCard title="▶ 무엇 때문에?" subtitle="부정적 감정이 드는 이유 설명해줘" >
             <BaseTextarea value={entry.reason} onChange={(e) => updateEntry({ reason: e.target.value })} />
           </SectionCard>
 
-          <SectionCard title="▶ 그래서 그런 감정이 들었구나" subtitle="그럴 수 있지, 이해돼.">
+          <SectionCard title="▶ 그래서 그런 감정이 들었구나" subtitle="그럴수 있지 이해돼~~
+(감정을 알아주고 공감하기-예)친구가 연락이 안되어서 걱정이 되었구나)
+">
             <BaseTextarea value={entry.empathy} onChange={(e) => updateEntry({ empathy: e.target.value })} />
           </SectionCard>
 
@@ -761,7 +763,7 @@ ${(targetEntry.positive || []).join(", ") || ""}`;
             />
           </SectionCard>
 
-          <SectionCard title="▶ 지금은 기분이 어때?">
+          <SectionCard title="▶ 지금은 기분이 어때?"subtitle="감정의 종류에서 보고 긍정적인 감정이면 잘 된것이고 잘 안되었으면 다시 욕구탐색과 하고싶은 말을 말로 표현하면 도움이 됨. 여전히 부정적인 감정이 해결되지 않았다면 무의식에 해결되지않은 많은 감정이 남아있어서 그럴수 있음">
             <div className="stack">
               {POSITIVE_GROUPS.map((group) => (
                 <CollapsibleGroup
