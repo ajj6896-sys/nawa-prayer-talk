@@ -9,6 +9,8 @@ import {
   ChevronRight,
   Pencil,
   Check,
+  Lock,
+  Shield,
 } from "lucide-react";
 import "./index.css";
 
@@ -45,9 +47,10 @@ const POSITIVE_GROUPS = [
   { key: "interest", title: "흥미", items: ["흥미로운", "재미있는"] },
 ];
 
-const RECORDS_KEY = "nawa-prayer-talk-records-v3";
-const UI_KEY = "nawa-prayer-talk-ui-v3";
-const THEME_KEY = "nawa-prayer-talk-theme-v3";
+const RECORDS_KEY = "nawa-prayer-talk-records-v4";
+const UI_KEY = "nawa-prayer-talk-ui-v4";
+const THEME_KEY = "nawa-prayer-talk-theme-v4";
+const PIN_KEY = "nawa-prayer-talk-pin-v1";
 
 const THEMES = [
   { key: "cream", label: "🍦 크림" },
@@ -73,6 +76,15 @@ const parseYmd = (s) => {
   return new Date(y, (m || 1) - 1, d || 1);
 };
 const entryId = () => `entry-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+
+const simpleHash = (str) => {
+  let h = 0;
+  for (let i = 0; i < str.length; i += 1) {
+    h = (h << 5) - h + str.charCodeAt(i);
+    h |= 0;
+  }
+  return String(h);
+};
 
 const emptyEntry = (date = todayString()) => ({
   id: entryId(),
@@ -158,6 +170,92 @@ function BaseCheckbox({ checked, onChange, id }) {
   return <input id={id} type="checkbox" checked={checked} onChange={onChange} className="checkbox" />;
 }
 
+function AuthScreen({ theme, hasPin, onSetup, onUnlock }) {
+  const [pin, setPin] = useState("");
+  const [confirmPin, setConfirmPin] = useState("");
+  const [error, setError] = useState("");
+
+  return (
+    <div className={appThemeClass(theme)}>
+      <div
+        style={{
+          minHeight: "100vh",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          padding: 16,
+        }}
+      >
+        <div className="card" style={{ width: "100%", maxWidth: 460 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 10 }}>
+            <Shield size={22} />
+            <div className="card-title">{hasPin ? "마음 기록 잠금 해제" : "마음 기록 잠금 설정"}</div>
+          </div>
+
+          <p className="card-subtitle" style={{ marginBottom: 16 }}>
+            {hasPin ? "비밀번호를 입력하면 기록이 열려." : "처음 한 번만 비밀번호를 정하면 다음부터 잠금 화면이 나타나."}
+          </p>
+
+          <div className="stack">
+            <BaseInput
+              type="password"
+              inputMode="numeric"
+              placeholder="비밀번호 4자리 이상"
+              value={pin}
+              onChange={(e) => setPin(e.target.value)}
+            />
+
+            {!hasPin ? (
+              <BaseInput
+                type="password"
+                inputMode="numeric"
+                placeholder="비밀번호 확인"
+                value={confirmPin}
+                onChange={(e) => setConfirmPin(e.target.value)}
+              />
+            ) : null}
+
+            {error ? <div className="helper-text" style={{ color: "#d84a4a" }}>{error}</div> : null}
+
+            {!hasPin ? (
+              <BaseButton
+                className="primary-btn"
+                onClick={() => {
+                  if (pin.length < 4) {
+                    setError("비밀번호는 4자리 이상으로 해줘.");
+                    return;
+                  }
+                  if (pin !== confirmPin) {
+                    setError("비밀번호 확인이 맞지 않아.");
+                    return;
+                  }
+                  setError("");
+                  onSetup(pin);
+                }}
+              >
+                <Lock size={16} />
+                잠금 설정
+              </BaseButton>
+            ) : (
+              <BaseButton
+                className="primary-btn"
+                onClick={() => {
+                  const ok = onUnlock(pin);
+                  if (!ok) setError("비밀번호가 맞지 않아.");
+                  else setError("");
+                }}
+              >
+                <Lock size={16} />
+                열기
+              </BaseButton>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function MonthCalendar({ records, currentDate, onSelectDate, monthCursor, setMonthCursor }) {
   const year = monthCursor.getFullYear();
   const month = monthCursor.getMonth();
@@ -198,6 +296,7 @@ function MonthCalendar({ records, currentDate, onSelectDate, monthCursor, setMon
           const dateKey = ymd(dateObj);
           const count = (records[dateKey] || []).length;
           const isSelected = dateKey === currentDate;
+
           return (
             <button
               key={dateKey}
@@ -356,6 +455,9 @@ function CollapsibleGroup({ title, items, selected, onToggle, defaultOpen = fals
 
 export default function App() {
   const [theme, setTheme] = useState(() => localStorage.getItem(THEME_KEY) || "lavender");
+  const [pinHash, setPinHash] = useState(() => localStorage.getItem(PIN_KEY) || "");
+  const [isUnlocked, setIsUnlocked] = useState(false);
+
   const [records, setRecords] = useState(() => readRecords());
   const [currentDate, setCurrentDate] = useState(() => readUi().currentDate || todayString());
   const [selectedEntryId, setSelectedEntryId] = useState(() => readUi().selectedEntryId || "");
@@ -371,14 +473,18 @@ export default function App() {
 
   useEffect(() => {
     localStorage.setItem(THEME_KEY, theme);
+    document.title = "마음 기록";
   }, [theme]);
 
   useEffect(() => {
+    if (!isUnlocked) return;
     saveUi({ currentDate, selectedEntryId });
     setMonthCursor(parseYmd(currentDate));
-  }, [currentDate, selectedEntryId]);
+  }, [currentDate, selectedEntryId, isUnlocked]);
 
   useEffect(() => {
+    if (!isUnlocked) return;
+
     const entries = records[currentDate] || [];
     if (entries.length === 0) {
       const newEntry = emptyEntry(currentDate);
@@ -389,10 +495,10 @@ export default function App() {
     const target = entries.find((e) => e.id === selectedEntryId) || entries[0];
     setSelectedEntryId(target.id);
     if (JSON.stringify(target) !== JSON.stringify(entry)) setEntry(target);
-  }, [currentDate, records]);
+  }, [currentDate, records, isUnlocked]);
 
   useEffect(() => {
-    if (!selectedEntryId) return;
+    if (!isUnlocked || !selectedEntryId) return;
 
     const day = records[entry.date] || [];
     const prev = day.find((e) => e.id === selectedEntryId);
@@ -418,7 +524,7 @@ export default function App() {
     return () => {
       if (saveTimer.current) clearTimeout(saveTimer.current);
     };
-  }, [entry, selectedEntryId, records]);
+  }, [entry, selectedEntryId, records, isUnlocked]);
 
   const updateEntry = (patch) => setEntry((prev) => ({ ...prev, ...patch, updatedAt: new Date().toISOString() }));
 
@@ -500,6 +606,26 @@ ${(targetEntry.positive || []).join(", ") || ""}`;
     }
   };
 
+  if (!isUnlocked) {
+    return (
+      <AuthScreen
+        theme={theme}
+        hasPin={!!pinHash}
+        onSetup={(pin) => {
+          const hashed = simpleHash(pin);
+          localStorage.setItem(PIN_KEY, hashed);
+          setPinHash(hashed);
+          setIsUnlocked(true);
+        }}
+        onUnlock={(pin) => {
+          const ok = simpleHash(pin) === pinHash;
+          if (ok) setIsUnlocked(true);
+          return ok;
+        }}
+      />
+    );
+  }
+
   return (
     <div className={appThemeClass(theme)}>
       <div className="page-wrap">
@@ -508,9 +634,15 @@ ${(targetEntry.positive || []).join(", ") || ""}`;
             <div className="hero-title-row">
               <div className="hero-title">
                 <Sparkles size={22} />
-                <span>자기 대화와 기도</span>
+                <span>마음 기록</span>
               </div>
+
+              <BaseButton className="outline-btn small-btn" onClick={() => setIsUnlocked(false)}>
+                <Lock size={14} />
+                잠그기
+              </BaseButton>
             </div>
+
             <p className="hero-subtitle">링크 열면 바로 쓰는 감정 기록</p>
             <div className="hero-copy">
               <div>내 브라우저에만 저장됨</div>
@@ -583,7 +715,7 @@ ${(targetEntry.positive || []).join(", ") || ""}`;
             <BaseInput
               value={entry.title}
               onChange={(e) => updateEntry({ title: e.target.value })}
-              placeholder="예: 오늘의 자기 대화"
+              placeholder="예: 오늘의 마음 기록"
             />
           </SectionCard>
 
