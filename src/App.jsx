@@ -67,11 +67,14 @@ const nowTimeString = () => {
   return `${String(d.getHours()).padStart(2, "0")}:${String(d.getMinutes()).padStart(2, "0")}`;
 };
 
-const ymd = (d) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+const ymd = (d) =>
+  `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+
 const parseYmd = (s) => {
   const [y, m, d] = (s || todayString()).split("-").map(Number);
   return new Date(y, (m || 1) - 1, d || 1);
 };
+
 const entryId = () => `entry-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
 
 const emptyEntry = (date = todayString()) => ({
@@ -85,6 +88,7 @@ const emptyEntry = (date = todayString()) => ({
   needs: [],
   needsOtherChecked: false,
   needsOtherText: "",
+  needsEmpathy: "",
   message: "",
   selfMessage: "",
   canDo: "",
@@ -98,15 +102,29 @@ const emptyEntry = (date = todayString()) => ({
 const normalizeRecords = (raw) => {
   if (!raw || typeof raw !== "object") return {};
   const out = {};
+
   Object.entries(raw).forEach(([date, value]) => {
     if (Array.isArray(value)) {
-      out[date] = value.map((entry) => ({ ...emptyEntry(date), ...entry, date, id: entry.id || entryId() }));
+      out[date] = value.map((entry) => ({
+        ...emptyEntry(date),
+        ...entry,
+        date,
+        id: entry.id || entryId(),
+      }));
     } else if (value && typeof value === "object") {
-      out[date] = [{ ...emptyEntry(date), ...value, date, id: value.id || entryId() }];
+      out[date] = [
+        {
+          ...emptyEntry(date),
+          ...value,
+          date,
+          id: value.id || entryId(),
+        },
+      ];
     } else {
       out[date] = [];
     }
   });
+
   return out;
 };
 
@@ -120,7 +138,8 @@ const readRecords = () => {
   }
 };
 
-const saveRecords = (records) => localStorage.setItem(RECORDS_KEY, JSON.stringify(records));
+const saveRecords = (records) =>
+  localStorage.setItem(RECORDS_KEY, JSON.stringify(records));
 
 const readUi = () => {
   try {
@@ -132,7 +151,9 @@ const readUi = () => {
 };
 
 const saveUi = (ui) => localStorage.setItem(UI_KEY, JSON.stringify(ui));
-const toggleInList = (list, value) => (list.includes(value) ? list.filter((v) => v !== value) : [...list, value]);
+
+const toggleInList = (list, value) =>
+  list.includes(value) ? list.filter((v) => v !== value) : [...list, value];
 
 function appThemeClass(theme) {
   return `app-root theme-${theme}`;
@@ -151,14 +172,30 @@ function BaseInput(props) {
 }
 
 function BaseTextarea(props) {
-  return <textarea {...props} className={`field textarea ${props.className || ""}`} />;
+  return (
+    <textarea {...props} className={`field textarea ${props.className || ""}`} />
+  );
 }
 
 function BaseCheckbox({ checked, onChange, id }) {
-  return <input id={id} type="checkbox" checked={checked} onChange={onChange} className="checkbox" />;
+  return (
+    <input
+      id={id}
+      type="checkbox"
+      checked={checked}
+      onChange={onChange}
+      className="checkbox"
+    />
+  );
 }
 
-function MonthCalendar({ records, currentDate, onSelectDate, monthCursor, setMonthCursor }) {
+function MonthCalendar({
+  records,
+  currentDate,
+  onSelectDate,
+  monthCursor,
+  setMonthCursor,
+}) {
   const year = monthCursor.getFullYear();
   const month = monthCursor.getMonth();
   const first = new Date(year, month, 1);
@@ -178,26 +215,40 @@ function MonthCalendar({ records, currentDate, onSelectDate, monthCursor, setMon
       <div className="card-head calendar-head">
         <div className="card-title">달력 기록</div>
         <div className="calendar-nav">
-          <BaseButton className="icon-btn" onClick={() => setMonthCursor(new Date(year, month - 1, 1))}>
+          <BaseButton
+            className="icon-btn"
+            onClick={() => setMonthCursor(new Date(year, month - 1, 1))}
+          >
             <ChevronLeft size={18} />
           </BaseButton>
-          <div className="calendar-label">{year}년 {month + 1}월</div>
-          <BaseButton className="icon-btn" onClick={() => setMonthCursor(new Date(year, month + 1, 1))}>
+          <div className="calendar-label">
+            {year}년 {month + 1}월
+          </div>
+          <BaseButton
+            className="icon-btn"
+            onClick={() => setMonthCursor(new Date(year, month + 1, 1))}
+          >
             <ChevronRight size={18} />
           </BaseButton>
         </div>
       </div>
 
       <div className="weekday-grid">
-        {weekdays.map((w) => <div key={w} className="weekday">{w}</div>)}
+        {weekdays.map((w) => (
+          <div key={w} className="weekday">
+            {w}
+          </div>
+        ))}
       </div>
 
       <div className="calendar-grid">
         {cells.map((dateObj, idx) => {
           if (!dateObj) return <div key={`empty-${idx}`} className="calendar-empty" />;
+
           const dateKey = ymd(dateObj);
           const count = (records[dateKey] || []).length;
           const isSelected = dateKey === currentDate;
+
           return (
             <button
               key={dateKey}
@@ -206,18 +257,31 @@ function MonthCalendar({ records, currentDate, onSelectDate, monthCursor, setMon
               className={`calendar-day ${isSelected ? "selected" : ""}`}
             >
               <span>{dateObj.getDate()}</span>
-              <span className={`day-count ${count > 0 ? "visible" : ""}`}>{count}개</span>
+              <span className={`day-count ${count > 0 ? "visible" : ""}`}>
+                {count}개
+              </span>
             </button>
           );
         })}
       </div>
 
-      <div className="helper-text">작성한 날은 개수로 표시돼. 날짜를 누르면 그날 기록을 볼 수 있어.</div>
+      <div className="helper-text">
+        작성한 날은 개수로 표시돼. 날짜를 누르면 그날 기록을 볼 수 있어.
+      </div>
     </div>
   );
 }
 
-function EntryList({ entries, selectedEntryId, onSelect, onCreate, onDelete, onCopy, onRename, currentDate }) {
+function EntryList({
+  entries,
+  selectedEntryId,
+  onSelect,
+  onCreate,
+  onDelete,
+  onCopy,
+  onRename,
+  currentDate,
+}) {
   const [editingKey, setEditingKey] = useState("");
   const [editingTitle, setEditingTitle] = useState("");
 
@@ -233,7 +297,8 @@ function EntryList({ entries, selectedEntryId, onSelect, onCreate, onDelete, onC
       <div className="card-head">
         <div className="card-title">{currentDate} 기록</div>
         <BaseButton className="primary-btn" onClick={onCreate}>
-          <Plus size={16} />추가
+          <Plus size={16} />
+          추가
         </BaseButton>
       </div>
 
@@ -247,7 +312,10 @@ function EntryList({ entries, selectedEntryId, onSelect, onCreate, onDelete, onC
             const isSelected = selectedEntryId === entry.id;
 
             return (
-              <div key={`${entry.id}-${idx}`} className={`entry-item ${isSelected ? "active" : ""}`}>
+              <div
+                key={`${entry.id}-${idx}`}
+                className={`entry-item ${isSelected ? "active" : ""}`}
+              >
                 <div className="entry-main">
                   {isEditing ? (
                     <div className="entry-edit">
@@ -279,8 +347,14 @@ function EntryList({ entries, selectedEntryId, onSelect, onCreate, onDelete, onC
                       </div>
                     </div>
                   ) : (
-                    <button type="button" onClick={() => onSelect(entry.id)} className="entry-select">
-                      <div className="entry-title">{entry.title?.trim() || `${idx + 1}번째 기록`}</div>
+                    <button
+                      type="button"
+                      onClick={() => onSelect(entry.id)}
+                      className="entry-select"
+                    >
+                      <div className="entry-title">
+                        {entry.title?.trim() || `${idx + 1}번째 기록`}
+                      </div>
                       <div className="entry-time">{entry.timeLabel || "시간 미지정"}</div>
                     </button>
                   )}
@@ -297,8 +371,16 @@ function EntryList({ entries, selectedEntryId, onSelect, onCreate, onDelete, onC
                     >
                       <Pencil size={14} />
                     </BaseButton>
-                    <BaseButton className="ghost-btn tiny-btn" onClick={() => onCopy(entry)}>복사</BaseButton>
-                    <BaseButton className="ghost-btn tiny-btn danger" onClick={() => onDelete(entry.id)}>
+                    <BaseButton
+                      className="ghost-btn tiny-btn"
+                      onClick={() => onCopy(entry)}
+                    >
+                      복사
+                    </BaseButton>
+                    <BaseButton
+                      className="ghost-btn tiny-btn danger"
+                      onClick={() => onDelete(entry.id)}
+                    >
                       <Trash2 size={16} />
                     </BaseButton>
                   </div>
@@ -324,12 +406,22 @@ function SectionCard({ title, children, subtitle }) {
   );
 }
 
-function CollapsibleGroup({ title, items, selected, onToggle, defaultOpen = false }) {
+function CollapsibleGroup({
+  title,
+  items,
+  selected,
+  onToggle,
+  defaultOpen = false,
+}) {
   const [open, setOpen] = useState(defaultOpen);
 
   return (
     <div className="collapse">
-      <button type="button" className="collapse-head" onClick={() => setOpen((v) => !v)}>
+      <button
+        type="button"
+        className="collapse-head"
+        onClick={() => setOpen((v) => !v)}
+      >
         <div>
           <div className="collapse-title">{title}</div>
           <div className="collapse-sub">{open ? "접기" : "눌러서 펼치기"}</div>
@@ -343,7 +435,11 @@ function CollapsibleGroup({ title, items, selected, onToggle, defaultOpen = fals
             const id = `${title}-${item}`;
             return (
               <label key={item} htmlFor={id} className="check-item">
-                <BaseCheckbox id={id} checked={selected.includes(item)} onChange={() => onToggle(item)} />
+                <BaseCheckbox
+                  id={id}
+                  checked={selected.includes(item)}
+                  onChange={() => onToggle(item)}
+                />
                 <span>{item}</span>
               </label>
             );
@@ -355,16 +451,24 @@ function CollapsibleGroup({ title, items, selected, onToggle, defaultOpen = fals
 }
 
 export default function App() {
-  const [theme, setTheme] = useState(() => localStorage.getItem(THEME_KEY) || "lavender");
+  const [theme, setTheme] = useState(
+    () => localStorage.getItem(THEME_KEY) || "lavender"
+  );
   const [records, setRecords] = useState(() => readRecords());
-  const [currentDate, setCurrentDate] = useState(() => readUi().currentDate || todayString());
-  const [selectedEntryId, setSelectedEntryId] = useState(() => readUi().selectedEntryId || "");
+  const [currentDate, setCurrentDate] = useState(
+    () => readUi().currentDate || todayString()
+  );
+  const [selectedEntryId, setSelectedEntryId] = useState(
+    () => readUi().selectedEntryId || ""
+  );
   const [entry, setEntry] = useState(emptyEntry(todayString()));
   const [savedMessage, setSavedMessage] = useState("");
   const [copyMessage, setCopyMessage] = useState("");
   const copyMessageTimer = useRef(null);
   const [isSaving, setIsSaving] = useState(false);
-  const [monthCursor, setMonthCursor] = useState(parseYmd(readUi().currentDate || todayString()));
+  const [monthCursor, setMonthCursor] = useState(
+    parseYmd(readUi().currentDate || todayString())
+  );
   const saveTimer = useRef(null);
 
   const dayEntries = useMemo(() => records[currentDate] || [], [records, currentDate]);
@@ -380,15 +484,20 @@ export default function App() {
 
   useEffect(() => {
     const entries = records[currentDate] || [];
+
     if (entries.length === 0) {
       const newEntry = emptyEntry(currentDate);
       setSelectedEntryId(newEntry.id);
       setEntry(newEntry);
       return;
     }
+
     const target = entries.find((e) => e.id === selectedEntryId) || entries[0];
     setSelectedEntryId(target.id);
-    if (JSON.stringify(target) !== JSON.stringify(entry)) setEntry(target);
+
+    if (JSON.stringify(target) !== JSON.stringify(entry)) {
+      setEntry(target);
+    }
   }, [currentDate, records]);
 
   useEffect(() => {
@@ -399,20 +508,31 @@ export default function App() {
     if (prev && JSON.stringify(prev) === JSON.stringify(entry)) return;
 
     if (saveTimer.current) clearTimeout(saveTimer.current);
+
     saveTimer.current = setTimeout(() => {
       setRecords((old) => {
         const currentDay = old[entry.date] || [];
         const exists = currentDay.some((e) => e.id === selectedEntryId);
+
         const nextDay = exists
-          ? currentDay.map((e) => (e.id === selectedEntryId ? { ...entry, updatedAt: new Date().toISOString() } : e))
+          ? currentDay.map((e) =>
+              e.id === selectedEntryId
+                ? { ...entry, updatedAt: new Date().toISOString() }
+                : e
+            )
           : [...currentDay, { ...entry, updatedAt: new Date().toISOString() }];
+
         const next = { ...old, [entry.date]: nextDay };
         saveRecords(next);
         return next;
       });
+
       setSavedMessage("자동 저장됨");
       window.clearTimeout(window.__nawaPrayerSaveMessageTimer);
-      window.__nawaPrayerSaveMessageTimer = window.setTimeout(() => setSavedMessage(""), 900);
+      window.__nawaPrayerSaveMessageTimer = window.setTimeout(
+        () => setSavedMessage(""),
+        900
+      );
     }, 900);
 
     return () => {
@@ -420,7 +540,12 @@ export default function App() {
     };
   }, [entry, selectedEntryId, records]);
 
-  const updateEntry = (patch) => setEntry((prev) => ({ ...prev, ...patch, updatedAt: new Date().toISOString() }));
+  const updateEntry = (patch) =>
+    setEntry((prev) => ({
+      ...prev,
+      ...patch,
+      updatedAt: new Date().toISOString(),
+    }));
 
   const createEntryForDate = (date = currentDate) => {
     const newEntry = emptyEntry(date);
@@ -433,6 +558,7 @@ export default function App() {
     const day = records[currentDate] || [];
     const nextDay = day.filter((e) => e.id !== id);
     const nextRecords = { ...records, [currentDate]: nextDay };
+
     setRecords(nextRecords);
     saveRecords(nextRecords);
 
@@ -449,27 +575,36 @@ export default function App() {
   };
 
   const handleCopyEntry = async (targetEntry) => {
-  
     const text = `제목: ${targetEntry.title || ""}
 날짜: ${targetEntry.date} ${targetEntry.timeLabel || ""}
+
+부정적 감정:
+${(targetEntry.negative || []).join(", ") || ""}
 
 무슨 일이 있었나:
 ${targetEntry.reason || ""}
 
-공감:
+감정 공감:
 ${targetEntry.empathy || ""}
 
-내가 하고 싶은 말:
+바라는 것 / 욕구:
+${(targetEntry.needs || []).join(", ") || ""}
+${targetEntry.needsOtherChecked ? `기타: ${targetEntry.needsOtherText || ""}` : ""}
+
+욕구 결핍에 대한 공감:
+${targetEntry.needsEmpathy || ""}
+
+상대에게 하고 싶은 말:
 ${targetEntry.message || ""}
 
 나에게 해주고 싶은 말:
 ${targetEntry.selfMessage || ""}
 
-할 수 있는 것:
-${targetEntry.canDo || ""}
-
 할 수 없는 것:
 ${targetEntry.cannotDo || ""}
+
+할 수 있는 것:
+${targetEntry.canDo || ""}
 
 기도:
 ${targetEntry.prayer || ""}
@@ -491,6 +626,7 @@ ${(targetEntry.positive || []).join(", ") || ""}`;
         document.execCommand("copy");
         document.body.removeChild(textarea);
       }
+
       if (copyMessageTimer.current) clearTimeout(copyMessageTimer.current);
       setCopyMessage("복사완료");
       copyMessageTimer.current = setTimeout(() => setCopyMessage(""), 1500);
@@ -500,20 +636,19 @@ ${(targetEntry.positive || []).join(", ") || ""}`;
       copyMessageTimer.current = setTimeout(() => setCopyMessage(""), 1500);
     }
   };
-  // 🔹 백업 다운로드
+
   const handleExportBackup = () => {
     try {
       const backupData = {
         records,
         currentDate,
         selectedEntryId,
-        theme
+        theme,
       };
 
-      const blob = new Blob(
-        [JSON.stringify(backupData, null, 2)],
-        { type: "application/json" }
-      );
+      const blob = new Blob([JSON.stringify(backupData, null, 2)], {
+        type: "application/json",
+      });
 
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
@@ -526,14 +661,12 @@ ${(targetEntry.positive || []).join(", ") || ""}`;
 
       setSavedMessage("백업 파일 저장됨");
       setTimeout(() => setSavedMessage(""), 1500);
-
     } catch {
       setSavedMessage("백업 실패");
       setTimeout(() => setSavedMessage(""), 1500);
     }
   };
 
-  // 🔹 백업 복원
   const handleImportBackup = (event) => {
     const file = event.target.files?.[0];
     if (!file) return;
@@ -546,8 +679,10 @@ ${(targetEntry.positive || []).join(", ") || ""}`;
 
         if (!data.records) throw new Error();
 
-        setRecords(data.records);
-        saveRecords(data.records);
+        const normalized = normalizeRecords(data.records);
+
+        setRecords(normalized);
+        saveRecords(normalized);
 
         if (data.currentDate) setCurrentDate(data.currentDate);
         if (data.selectedEntryId) setSelectedEntryId(data.selectedEntryId);
@@ -555,7 +690,6 @@ ${(targetEntry.positive || []).join(", ") || ""}`;
 
         setSavedMessage("백업 복원 완료");
         setTimeout(() => setSavedMessage(""), 1500);
-
       } catch {
         setSavedMessage("백업 파일 오류");
         setTimeout(() => setSavedMessage(""), 1500);
@@ -563,7 +697,9 @@ ${(targetEntry.positive || []).join(", ") || ""}`;
     };
 
     reader.readAsText(file);
+    event.target.value = "";
   };
+
   return (
     <div className={appThemeClass(theme)}>
       <div className="page-wrap">
@@ -575,10 +711,12 @@ ${(targetEntry.positive || []).join(", ") || ""}`;
                 <span>나와의 대화</span>
               </div>
             </div>
+
             <p className="hero-subtitle">링크 열면 바로 쓰는 감정 기록</p>
+
             <div className="hero-copy">
               <div>내 브라우저에만 저장됨 [기기가 바뀔 경우 연동 안됨]</div>
-              <div className="muted-line"> 복사하여 다른 곳에 저장하는 방식 추천  </div>
+              <div className="muted-line">복사하여 다른 곳에 저장하는 방식 추천</div>
             </div>
 
             {copyMessage ? (
@@ -590,7 +728,7 @@ ${(targetEntry.positive || []).join(", ") || ""}`;
 
           <div className="card">
             <div className="card-title">테마</div>
-            <div className="card-subtitle"></div>
+            <div className="card-subtitle" />
 
             <div className="theme-grid">
               {THEMES.map((item) => (
@@ -605,26 +743,30 @@ ${(targetEntry.positive || []).join(", ") || ""}`;
               ))}
             </div>
           </div>
-<div className="card">
-  <div className="card-title">백업</div>
-  <div className="card-subtitle">기기 변경 전 백업 파일을 저장해두면 복원 가능.</div>
 
-  <div className="row-btns" style={{ marginTop: 12, flexWrap: "wrap" }}>
-    <BaseButton className="outline-btn" onClick={handleExportBackup}>
-      백업 다운로드
-    </BaseButton>
+          <div className="card">
+            <div className="card-title">백업</div>
+            <div className="card-subtitle">
+              기기 변경 전 백업 파일을 저장해두면 복원 가능.
+            </div>
 
-    <label className="outline-btn" style={{ cursor: "pointer" }}>
-      백업 복원
-      <input
-        type="file"
-        accept="application/json"
-        onChange={handleImportBackup}
-        style={{ display: "none" }}
-      />
-    </label>
-  </div>
-</div>
+            <div className="row-btns" style={{ marginTop: 12, flexWrap: "wrap" }}>
+              <BaseButton className="outline-btn" onClick={handleExportBackup}>
+                백업 다운로드
+              </BaseButton>
+
+              <label className="outline-btn" style={{ cursor: "pointer" }}>
+                백업 복원
+                <input
+                  type="file"
+                  accept="application/json"
+                  onChange={handleImportBackup}
+                  style={{ display: "none" }}
+                />
+              </label>
+            </div>
+          </div>
+
           <MonthCalendar
             records={records}
             currentDate={currentDate}
@@ -645,15 +787,26 @@ ${(targetEntry.positive || []).join(", ") || ""}`;
                 const day = old[targetEntry.date] || [];
                 const nextDay = day.map((item, i) => {
                   if (i !== idx) return item;
-                  return { ...item, title: nextTitle, updatedAt: new Date().toISOString() };
+                  return {
+                    ...item,
+                    title: nextTitle,
+                    updatedAt: new Date().toISOString(),
+                  };
                 });
+
                 const next = { ...old, [targetEntry.date]: nextDay };
                 saveRecords(next);
                 return next;
               });
+
               if (selectedEntryId === targetEntry.id) {
-                setEntry((prev) => ({ ...prev, title: nextTitle, updatedAt: new Date().toISOString() }));
+                setEntry((prev) => ({
+                  ...prev,
+                  title: nextTitle,
+                  updatedAt: new Date().toISOString(),
+                }));
               }
+
               setSavedMessage("제목 수정 완료");
               setTimeout(() => setSavedMessage(""), 1200);
             }}
@@ -678,21 +831,31 @@ ${(targetEntry.positive || []).join(", ") || ""}`;
                   title={group.title}
                   items={group.items}
                   selected={entry.negative}
-                  onToggle={(item) => updateEntry({ negative: toggleInList(entry.negative, item) })}
+                  onToggle={(item) =>
+                    updateEntry({ negative: toggleInList(entry.negative, item) })
+                  }
                   defaultOpen={idx === 0}
                 />
               ))}
             </div>
           </SectionCard>
 
-          <SectionCard title="▶ 무엇 때문에?" subtitle="부정적 감정이 드는 이유 설명해줘" >
-            <BaseTextarea value={entry.reason} onChange={(e) => updateEntry({ reason: e.target.value })} />
+          <SectionCard title="▶ 무엇 때문에?" subtitle="부정적 감정이 드는 이유 설명해줘">
+            <BaseTextarea
+              value={entry.reason}
+              onChange={(e) => updateEntry({ reason: e.target.value })}
+            />
           </SectionCard>
 
-          <SectionCard title="▶ 그래서 그런 감정이 들었구나" subtitle="그럴수 있지 이해돼~~
-(감정을 알아주고 공감하기-예)친구가 연락이 안되어서 걱정이 되었구나)
-">
-            <BaseTextarea value={entry.empathy} onChange={(e) => updateEntry({ empathy: e.target.value })} />
+          <SectionCard
+            title="▶ 그래서 그런 감정이 들었구나"
+            subtitle={`그럴수 있지 이해돼~~
+(감정을 알아주고 공감하기-예) 친구가 연락이 안되어서 걱정이 되었구나`}
+          >
+            <BaseTextarea
+              value={entry.empathy}
+              onChange={(e) => updateEntry({ empathy: e.target.value })}
+            />
           </SectionCard>
 
           <SectionCard title="▶ 그럼 네가 그 상대(또는 자신)에게 바라는 것은 무엇이야?">
@@ -703,37 +866,65 @@ ${(targetEntry.positive || []).join(", ") || ""}`;
                   title={group.title}
                   items={group.items}
                   selected={entry.needs}
-                  onToggle={(item) => updateEntry({ needs: toggleInList(entry.needs, item) })}
+                  onToggle={(item) =>
+                    updateEntry({ needs: toggleInList(entry.needs, item) })
+                  }
                 />
               ))}
 
               <div className="inner-box">
                 <div className="inner-title">기타</div>
+
                 <label className="inline-check">
                   <BaseCheckbox
                     checked={entry.needsOtherChecked}
-                    onChange={() => updateEntry({ needsOtherChecked: !entry.needsOtherChecked })}
+                    onChange={() =>
+                      updateEntry({
+                        needsOtherChecked: !entry.needsOtherChecked,
+                      })
+                    }
                   />
                   <span>기타 항목 사용</span>
                 </label>
+
                 <BaseInput
                   value={entry.needsOtherText}
-                  onChange={(e) => updateEntry({ needsOtherText: e.target.value })}
+                  onChange={(e) =>
+                    updateEntry({ needsOtherText: e.target.value })
+                  }
                   placeholder="기타 내용을 적어줘"
                 />
               </div>
             </div>
           </SectionCard>
 
+          <SectionCard
+            title="▶ 그렇구나~"
+            subtitle={`(욕구 결핍으로 인한 부정적 감정에 대한 공감하기)
+예: 친구가 연락을 잘 해주기를 바랐는데 안되니까 속상하고 답답했구나`}
+          >
+            <BaseTextarea
+              value={entry.needsEmpathy}
+              onChange={(e) => updateEntry({ needsEmpathy: e.target.value })}
+              placeholder="욕구가 채워지지 않아서 느낀 감정을 공감해줘"
+            />
+          </SectionCard>
+
           <SectionCard title="▶ 네가 상대에게 하고 싶은 말은 뭐야?">
-            <BaseTextarea value={entry.message} onChange={(e) => updateEntry({ message: e.target.value })} />
+            <BaseTextarea
+              value={entry.message}
+              onChange={(e) => updateEntry({ message: e.target.value })}
+            />
           </SectionCard>
 
           <SectionCard
             title="▶ 너는 자신에게 어떤 말을 해주고 싶어?"
             subtitle="자신에게 공감, 지지, 격려, 응원, 칭찬, 사랑, 축복의 말을 해줘."
           >
-            <BaseTextarea value={entry.selfMessage} onChange={(e) => updateEntry({ selfMessage: e.target.value })} />
+            <BaseTextarea
+              value={entry.selfMessage}
+              onChange={(e) => updateEntry({ selfMessage: e.target.value })}
+            />
           </SectionCard>
 
           <SectionCard
@@ -743,11 +934,18 @@ ${(targetEntry.positive || []).join(", ") || ""}`;
             <div className="two-col">
               <div className="stack">
                 <div className="label-text">할 수 없는 것</div>
-                <BaseTextarea value={entry.cannotDo} onChange={(e) => updateEntry({ cannotDo: e.target.value })} />
+                <BaseTextarea
+                  value={entry.cannotDo}
+                  onChange={(e) => updateEntry({ cannotDo: e.target.value })}
+                />
               </div>
+
               <div className="stack">
                 <div className="label-text">할 수 있는 것</div>
-                <BaseTextarea value={entry.canDo} onChange={(e) => updateEntry({ canDo: e.target.value })} />
+                <BaseTextarea
+                  value={entry.canDo}
+                  onChange={(e) => updateEntry({ canDo: e.target.value })}
+                />
               </div>
             </div>
           </SectionCard>
@@ -763,7 +961,10 @@ ${(targetEntry.positive || []).join(", ") || ""}`;
             />
           </SectionCard>
 
-          <SectionCard title="▶ 지금은 기분이 어때?"subtitle="감정의 종류에서 보고 긍정적인 감정이면 잘 된것이고 잘 안되었으면 다시 욕구탐색과 하고싶은 말을 말로 표현하면 도움이 됨. 여전히 부정적인 감정이 해결되지 않았다면 무의식에 해결되지않은 많은 감정이 남아있어서 그럴수 있음">
+          <SectionCard
+            title="▶ 지금은 기분이 어때?"
+            subtitle="감정의 종류에서 보고 긍정적인 감정이면 잘 된것이고 잘 안되었으면 다시 욕구탐색과 하고싶은 말을 말로 표현하면 도움이 됨. 여전히 부정적인 감정이 해결되지 않았다면 무의식에 해결되지않은 많은 감정이 남아있어서 그럴수 있음"
+          >
             <div className="stack">
               {POSITIVE_GROUPS.map((group) => (
                 <CollapsibleGroup
@@ -771,7 +972,9 @@ ${(targetEntry.positive || []).join(", ") || ""}`;
                   title={group.title}
                   items={group.items}
                   selected={entry.positive}
-                  onToggle={(item) => updateEntry({ positive: toggleInList(entry.positive, item) })}
+                  onToggle={(item) =>
+                    updateEntry({ positive: toggleInList(entry.positive, item) })
+                  }
                 />
               ))}
             </div>
@@ -782,17 +985,28 @@ ${(targetEntry.positive || []).join(", ") || ""}`;
               className={`save-btn ${isSaving ? "saving" : ""}`}
               onClick={() => {
                 setIsSaving(true);
-                const updatedEntry = { ...entry, updatedAt: new Date().toISOString() };
+                const updatedEntry = {
+                  ...entry,
+                  updatedAt: new Date().toISOString(),
+                };
+
                 setRecords((old) => {
                   const currentDay = old[updatedEntry.date] || [];
-                  const exists = currentDay.some((e) => e.id === selectedEntryId);
+                  const exists = currentDay.some(
+                    (e) => e.id === selectedEntryId
+                  );
+
                   const nextDay = exists
-                    ? currentDay.map((e) => (e.id === selectedEntryId ? updatedEntry : e))
+                    ? currentDay.map((e) =>
+                        e.id === selectedEntryId ? updatedEntry : e
+                      )
                     : [...currentDay, updatedEntry];
+
                   const next = { ...old, [updatedEntry.date]: nextDay };
                   saveRecords(next);
                   return next;
                 });
+
                 setSavedMessage("저장하였습니다");
                 setTimeout(() => {
                   setSavedMessage("");
@@ -800,7 +1014,8 @@ ${(targetEntry.positive || []).join(", ") || ""}`;
                 }, 1200);
               }}
             >
-              <Check size={16} />{isSaving ? "저장 중..." : "저장"}
+              <Check size={16} />
+              {isSaving ? "저장 중..." : "저장"}
             </BaseButton>
           </div>
         </div>
