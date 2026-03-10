@@ -1242,11 +1242,6 @@ ${(targetEntry.positive || []).join(", ") || ""}`;
     onChange={(e) => updateEntry({ reason: e.target.value })}
   />
 </SectionCard>
-  <BaseTextarea
-    value={entry.reason}
-    onChange={(e) => updateEntry({ reason: e.target.value })}
-  />
-</SectionCard>
 
          <SectionCard
   title="🤍 그래서 그런 마음이 들었구나"
