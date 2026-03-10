@@ -692,6 +692,14 @@ export default function App() {
   const saveTimer = useRef(null);
 
   const dayEntries = useMemo(() => records[currentDate] || [], [records, currentDate]);
+  const selectedEmotions = entry.negative?.join(" · ") || "";
+
+const selectedNeeds = [
+  ...(entry.needs || []),
+  ...(entry.needsOtherChecked && entry.needsOtherText?.trim()
+    ? [entry.needsOtherText.trim()]
+    : []),
+].join(" · ");
 
   useEffect(() => {
     localStorage.setItem(THEME_KEY, theme);
