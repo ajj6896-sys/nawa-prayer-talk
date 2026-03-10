@@ -722,7 +722,10 @@ function CollapsibleGroup({ title, items, selected, onToggle, defaultOpen = fals
         onClick={() => setOpen((v) => !v)}
       >
         <div>
-          <div className="collapse-title">{title}</div>
+          <div className="collapse-title">
+  {title}
+  {selectedCount > 0 ? ` (${selectedCount})` : ""}
+</div>
           <div className="collapse-sub">{open ? "접기" : "눌러서 펼치기"}</div>
         </div>
         {open ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
