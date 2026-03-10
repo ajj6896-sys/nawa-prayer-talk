@@ -1302,16 +1302,20 @@ ${(targetEntry.positive || []).join(", ") || ""}`;
           >
             <div className="stack">
               {NEED_GROUPS.map((group) => (
-                <CollapsibleGroup
-                  key={group.key}
-                  title={group.title}
-                  items={group.items}
-                  selected={entry.needs}
-                  onToggle={(item) =>
-                    updateEntry({ needs: toggleInList(entry.needs, item) })
-                  }
-                />
-              ))}
+  <CollapsibleGroup
+    key={group.key}
+    title={group.title}
+    items={group.items}
+    selected={entry.needs}
+    onToggle={(item) =>
+      updateEntry({ needs: toggleInList(entry.needs, item) })
+    }
+    open={openNeedGroup === group.key}
+    onToggleOpen={() =>
+      setOpenNeedGroup((prev) => (prev === group.key ? "" : group.key))
+    }
+  />
+))}
 
               <div className="inner-box">
                 <div className="inner-title">기타</div>
