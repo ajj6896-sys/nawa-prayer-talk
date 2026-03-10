@@ -875,3 +875,50 @@ body {
   border: 1px solid #4a4d69;
   color: #f7f4ee;
 }
+
+.summary-chip-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.summary-toggle-btn {
+  border: none;
+  background: transparent;
+  font: inherit;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  opacity: 0.8;
+  padding: 0;
+}
+
+.emotion-chip-wrap.collapsed {
+  max-height: 104px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.emotion-chip-wrap.expanded {
+  max-height: none;
+  overflow: visible;
+}
+
+.needs-summary-box {
+  font-size: 14px;
+  line-height: 1.65;
+  word-break: keep-all;
+}
+
+.needs-summary-box.collapsed {
+  max-height: 72px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.needs-summary-box.expanded {
+  max-height: none;
+  overflow: visible;
+}
