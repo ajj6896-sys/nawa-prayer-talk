@@ -711,9 +711,7 @@ function SectionCard({ title, children, subtitle }) {
   );
 }
 
-function CollapsibleGroup({ title, items, selected, onToggle, defaultOpen = false }) {
-  const [open, setOpen] = useState(defaultOpen);
-  const selectedCount = items.filter((item) => selected.includes(item)).length;
+function CollapsibleGroup({ title, items, selected, onToggle, open, onToggleOpen }) {  const selectedCount = items.filter((item) => selected.includes(item)).length;
   return (
     <div className="collapse">
       <button
