@@ -1208,9 +1208,31 @@ ${(targetEntry.positive || []).join(", ") || ""}`;
 천천히 적어보자`}
 >
   {entry.negative?.length > 0 && (
-    <div className="summary-chip-box">
+    {entry.negative?.length > 0 && (
+  <div className="summary-chip-box">
+
+    <div className="summary-chip-head">
       <div className="summary-chip-title">💭 선택한 감정</div>
 
+      <button
+        type="button"
+        className="summary-toggle-btn"
+        onClick={() => setShowEmotionSummary((prev) => !prev)}
+      >
+        {showEmotionSummary ? "접기" : "펼치기"}
+      </button>
+    </div>
+
+    <div className={`emotion-chip-wrap ${showEmotionSummary ? "expanded" : "collapsed"}`}>
+      {entry.negative.map((emotion) => (
+        <span key={emotion} className="emotion-chip">
+          {EMOTION_EMOJI[emotion] || "💭"} {emotion}
+        </span>
+      ))}
+    </div>
+
+  </div>
+)}
       <div className="emotion-chip-wrap">
         {entry.negative.map((emotion) => (
           <span key={emotion} className="emotion-chip">
