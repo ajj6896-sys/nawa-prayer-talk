@@ -827,9 +827,9 @@ body {
 }
 
 .emotion-chip-wrap {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+  gap: 8px;
   margin-top: 8px;
 }
 
