@@ -359,6 +359,7 @@ function appThemeClass(theme) {
 
 function BaseButton({ children, className = "", type = "button", onClick }) {
   return (
+    
     <button type={type} onClick={onClick} className={`btn ${className}`}>
       {children}
     </button>
@@ -628,7 +629,44 @@ function CollapsibleGroup({ title, items, selected, onToggle, defaultOpen = fals
     </div>
   );
 }
+function IntroModal({ open, onClose }) {
+  if (!open) return null;
 
+  return (
+    <div className="modal-overlay">
+      <div className="modal-box">
+
+        <div className="modal-title">처음 사용하기 전에</div>
+        <div className="modal-text">
+          편하게 사용할 수 있도록 몇 가지만 알려줄게요.
+        </div>
+
+        <div className="modal-section">
+          <b>기록 저장 방식</b>
+          <p>기록은 이 브라우저에만 저장돼요.</p>
+          <p>기기를 바꾸거나 브라우저 데이터를 지우면 사라질 수 있어요.</p>
+        </div>
+
+        <div className="modal-section">
+          <b>기록 보관</b>
+          <p>각 기록의 <b>복사</b> 버튼으로 내용을 복사할 수 있어요.</p>
+          <p>중요한 기록은 따로 보관해두는 것을 추천해요.</p>
+        </div>
+
+        <div className="modal-section">
+          <b>알아둘 점</b>
+          <p>이 앱은 마음을 정리하기 위한 기록 도구예요.</p>
+          <p>상담이나 치료를 대신하지 않아요.</p>
+        </div>
+
+        <button className="btn primary-btn" onClick={onClose}>
+          확인했어요
+        </button>
+
+      </div>
+    </div>
+  );
+}
 export default function App() {
   const [theme, setTheme] = useState(
     () => localStorage.getItem(THEME_KEY) || "lavender"
@@ -645,6 +683,9 @@ export default function App() {
   const [copyMessage, setCopyMessage] = useState("");
   const copyMessageTimer = useRef(null);
   const [isSaving, setIsSaving] = useState(false);
+  const [showIntro, setShowIntro] = useState(() => {
+  return localStorage.getItem("nawa-intro-seen") !== "yes";
+});
   const [monthCursor, setMonthCursor] = useState(
     parseYmd(readUi().currentDate || todayString())
   );
@@ -879,6 +920,14 @@ ${(targetEntry.positive || []).join(", ") || ""}`;
 
   return (
     <div className={appThemeClass(theme)}>
+      <IntroModal
+      open={showIntro}
+      onClose={() => {
+        setShowIntro(false);
+        localStorage.setItem("nawa-intro-seen", "yes");
+      }}
+    />
+
       <div className="page-wrap">
         <div className="left-col">
           <div className="card hero-card">
