@@ -1285,7 +1285,7 @@ ${(targetEntry.positive || []).join(", ") || ""}`;
     value={entry.empathy}
     onChange={(e) => updateEntry({ empathy: e.target.value })}
   />
-</SectionCard>
+</SectionCard> 
 
           <SectionCard
             title="🌱 마음속에서는 무엇을 바랐을까"
