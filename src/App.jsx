@@ -1117,8 +1117,8 @@ ${(targetEntry.positive || []).join(", ") || ""}`;
       <div className="emotion-chip-wrap">
         {entry.negative.map((emotion) => (
           <span key={emotion} className="emotion-chip">
-            {emotion}
-          </span>
+  😟 {emotion}
+</span>
         ))}
       </div>
     </div>
