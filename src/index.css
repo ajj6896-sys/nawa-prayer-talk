@@ -825,17 +825,51 @@ body {
   border-color: #4a4d69;
   color: #f7f4ee;
 }
+
 .emotion-chip-wrap {
   display: flex;
   flex-wrap: wrap;
-  gap: 6px;
+  gap: 8px;
   margin-top: 6px;
 }
 
 .emotion-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   padding: 6px 10px;
   border-radius: 999px;
   font-size: 13px;
-  background: rgba(120, 90, 170, 0.12);
-  border: 1px solid rgba(120, 90, 170, 0.25);
+  line-height: 1.3;
+  white-space: nowrap;
+}
+
+.theme-lavender .emotion-chip {
+  background: #efe5ff;
+  border: 1px solid #d7c2f3;
+  color: #5d4674;
+}
+
+.theme-cream .emotion-chip {
+  background: #fff1df;
+  border: 1px solid #e7d2b6;
+  color: #7a5637;
+}
+
+.theme-sage .emotion-chip {
+  background: #e8f4e8;
+  border: 1px solid #c8dcc9;
+  color: #3f5d47;
+}
+
+.theme-peach .emotion-chip {
+  background: #ffe9df;
+  border: 1px solid #f0cbbb;
+  color: #9c553d;
+}
+
+.theme-night .emotion-chip {
+  background: #343753;
+  border: 1px solid #4a4d69;
+  color: #f7f4ee;
 }
