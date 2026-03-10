@@ -775,3 +775,53 @@ body {
     font-size: 20px;
   }
 }
+
+.summary-chip-box {
+  border-radius: 18px;
+  padding: 14px 16px;
+  margin-bottom: 14px;
+  border: 1px solid transparent;
+}
+
+.summary-chip-title {
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 6px;
+  opacity: 0.9;
+}
+
+.summary-chip-text {
+  font-size: 14px;
+  line-height: 1.65;
+  word-break: keep-all;
+}
+
+.theme-lavender .summary-chip-box {
+  background: #f7f1ff;
+  border-color: #ddd2ee;
+  color: #5d4674;
+}
+
+.theme-cream .summary-chip-box {
+  background: #fff5e8;
+  border-color: #e6d7c3;
+  color: #7a5637;
+}
+
+.theme-sage .summary-chip-box {
+  background: #eef8ee;
+  border-color: #cfe0cf;
+  color: #3f5d47;
+}
+
+.theme-peach .summary-chip-box {
+  background: #fff1ea;
+  border-color: #f0cbbb;
+  color: #9c553d;
+}
+
+.theme-night .summary-chip-box {
+  background: #2a2d44;
+  border-color: #4a4d69;
+  color: #f7f4ee;
+}
