@@ -1259,19 +1259,18 @@ ${(targetEntry.positive || []).join(", ") || ""}`;
       </div>
 
       <button
-        type="button"
-        className="summary-toggle-btn"
-        onClick={() => setShowEmotionSummary((prev) => !prev)}
-      >
-        {showEmotionSummary ? "접기" : "펼치기"}
-      </button>
-    </div>
+  type="button"
+  className="summary-toggle-btn"
+  onClick={() => setShowEmpathyEmotionSummary((prev) => !prev)}
+>
+  {showEmpathyEmotionSummary ? "접기" : "펼치기"}
+</button>
 
-    <div
-      className={`emotion-chip-wrap ${
-        showEmotionSummary ? "expanded" : "collapsed"
-      }`}
-    >
+<div
+  className={`emotion-chip-wrap ${
+    showEmpathyEmotionSummary ? "expanded" : "collapsed"
+  }`}
+>
       {entry.negative.map((emotion) => (
         <span key={emotion} className="emotion-chip">
           {EMOTION_EMOJI[emotion] || "💭"} {emotion}
