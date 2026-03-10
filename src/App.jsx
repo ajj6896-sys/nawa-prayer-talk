@@ -739,7 +739,11 @@ function CollapsibleGroup({ title, items, selected, onToggle, defaultOpen = fals
                   checked={selected.includes(item)}
                   onChange={() => onToggle(item)}
                 />
-                <span>{item}</span>
+                <span>
+  {EMOTION_EMOJI[item] || POSITIVE_EMOJI[item]
+    ? `${EMOTION_EMOJI[item] || POSITIVE_EMOJI[item]} ${item}`
+    : item}
+</span>
               </label>
             );
           })}
