@@ -1243,7 +1243,7 @@ ${(targetEntry.positive || []).join(", ") || ""}`;
   />
 </SectionCard>
 
-         <SectionCard
+<SectionCard
   title="🤍 그래서 그런 마음이 들었구나"
   subtitle={`그럴 수 있어
 그 상황이라면 누구라도 그렇게 느낄 수 있어
@@ -1252,33 +1252,35 @@ ${(targetEntry.positive || []).join(", ") || ""}`;
 괜히 마음이 쓰이고 걱정이 되었구나`}
 >
   {entry.negative?.length > 0 && (
-  <div className="summary-chip-box">
-    <div className="summary-chip-head">
-      <div className="summary-chip-title">
-        💭 선택한 감정 ({entry.negative.length}개)
+    <div className="summary-chip-box">
+      <div className="summary-chip-head">
+        <div className="summary-chip-title">
+          💭 선택한 감정 ({entry.negative.length}개)
+        </div>
+
+        <button
+          type="button"
+          className="summary-toggle-btn"
+          onClick={() => setShowEmpathyEmotionSummary((prev) => !prev)}
+        >
+          {showEmpathyEmotionSummary ? "접기" : "펼치기"}
+        </button>
       </div>
 
-      <button
-  type="button"
-  className="summary-toggle-btn"
-  onClick={() => setShowEmpathyEmotionSummary((prev) => !prev)}
->
-  {showEmpathyEmotionSummary ? "접기" : "펼치기"}
-</button>
-
-<div
-  className={`emotion-chip-wrap ${
-    showEmpathyEmotionSummary ? "expanded" : "collapsed"
-  }`}
->
-      {entry.negative.map((emotion) => (
-        <span key={emotion} className="emotion-chip">
-          {EMOTION_EMOJI[emotion] || "💭"} {emotion}
-        </span>
-      ))}
+      <div
+        className={`emotion-chip-wrap ${
+          showEmpathyEmotionSummary ? "expanded" : "collapsed"
+        }`}
+      >
+        {entry.negative.map((emotion) => (
+          <span key={emotion} className="emotion-chip">
+            {EMOTION_EMOJI[emotion] || "💭"} {emotion}
+          </span>
+        ))}
+      </div>
     </div>
-  </div>
-)}
+  )}
+
   <BaseTextarea
     value={entry.empathy}
     onChange={(e) => updateEntry({ empathy: e.target.value })}
