@@ -1110,12 +1110,19 @@ ${(targetEntry.positive || []).join(", ") || ""}`;
 예: 친구가 연락이 안 되어서
 괜히 마음이 쓰이고 걱정이 되었구나`}
 >
-  {selectedEmotions ? (
+  {entry.negative?.length > 0 && (
     <div className="summary-chip-box">
       <div className="summary-chip-title">선택한 감정</div>
-      <div className="summary-chip-text">{selectedEmotions}</div>
+
+      <div className="emotion-chip-wrap">
+        {entry.negative.map((emotion) => (
+          <span key={emotion} className="emotion-chip">
+            {emotion}
+          </span>
+        ))}
+      </div>
     </div>
-  ) : null}
+  )}
 
   <BaseTextarea
     value={entry.empathy}
