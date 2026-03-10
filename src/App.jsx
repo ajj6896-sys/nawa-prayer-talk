@@ -574,7 +574,8 @@ function MonthCalendar({ records, currentDate, onSelectDate, monthCursor, setMon
       </div>
 
       <div className="helper-text">
-        작성한 날은 개수로 보여줘요. 날짜를 누르면 그날의 기록을 볼 수 있어요.
+        작성한 날은 개수로 보여줘요. 
+        날짜를 누르면 그날의 기록을 볼 수 있어요.
       </div>
     </div>
   );
