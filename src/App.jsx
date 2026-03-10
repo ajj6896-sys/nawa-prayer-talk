@@ -1076,26 +1076,26 @@ ${(targetEntry.positive || []).join(", ") || ""}`;
               ))}
             </div>
           </SectionCard>
-
+          
           <SectionCard
   title="🌿 어떤 일이 있었을까"
   subtitle={`내 마음이 이렇게 느낀 이유를
 천천히 적어보자`}
 >
-  {selectedEmotions ? (
-    {entry.negative?.length > 0 && (
-  <div className="summary-chip-box">
-    <div className="summary-chip-title">선택한 감정</div>
+  {entry.negative?.length > 0 && (
+    <div className="summary-chip-box">
+      <div className="summary-chip-title">선택한 감정</div>
 
-    <div className="emotion-chip-wrap">
-      {entry.negative.map((emotion) => (
-        <span key={emotion} className="emotion-chip">
-          {emotion}
-        </span>
-      ))}
+      <div className="emotion-chip-wrap">
+        {entry.negative.map((emotion) => (
+          <span key={emotion} className="emotion-chip">
+            {emotion}
+          </span>
+        ))}
+      </div>
     </div>
-  </div>
-)}
+  )}
+
   <BaseTextarea
     value={entry.reason}
     onChange={(e) => updateEntry({ reason: e.target.value })}
