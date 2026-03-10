@@ -1211,7 +1211,9 @@ ${(targetEntry.positive || []).join(", ") || ""}`;
   <div className="summary-chip-box">
 
     <div className="summary-chip-head">
-      <div className="summary-chip-title">💭 선택한 감정</div>
+      <div className="summary-chip-title">
+  💭 선택한 감정 ({entry.negative.length}개)
+</div>
 
       <button
         type="button"
