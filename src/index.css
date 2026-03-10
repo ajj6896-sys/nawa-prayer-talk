@@ -825,3 +825,17 @@ body {
   border-color: #4a4d69;
   color: #f7f4ee;
 }
+.emotion-chip-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 6px;
+}
+
+.emotion-chip {
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 13px;
+  background: rgba(120, 90, 170, 0.12);
+  border: 1px solid rgba(120, 90, 170, 0.25);
+}
