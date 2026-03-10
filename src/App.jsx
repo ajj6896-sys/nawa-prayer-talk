@@ -1301,22 +1301,21 @@ ${(targetEntry.positive || []).join(", ") || ""}`;
 내 마음은 무엇을 바라보고 있었을까`}
           >
             <div className="stack">
-              {NEED_GROUPS.map((group) => (
+              {POSITIVE_GROUPS.map((group) => (
   <CollapsibleGroup
     key={group.key}
     title={group.title}
     items={group.items}
-    selected={entry.needs}
+    selected={entry.positive}
     onToggle={(item) =>
-      updateEntry({ needs: toggleInList(entry.needs, item) })
+      updateEntry({ positive: toggleInList(entry.positive, item) })
     }
-    open={openNeedGroup === group.key}
+    open={openPositiveGroup === group.key}
     onToggleOpen={() =>
-      setOpenNeedGroup((prev) => (prev === group.key ? "" : group.key))
+      setOpenPositiveGroup((prev) => (prev === group.key ? "" : group.key))
     }
   />
 ))}
-
               <div className="inner-box">
                 <div className="inner-title">기타</div>
 
