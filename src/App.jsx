@@ -1180,12 +1180,25 @@ ${(targetEntry.positive || []).join(", ") || ""}`;
 예: 친구가 연락을 해주기를 바랐는데
 그렇지 않아서 서운했구나`}
 >
-  {selectedNeeds ? (
-    <div className="summary-chip-box">
-      <div className="summary-chip-title">내가 바랐던 것</div>
-      <div className="summary-chip-text">{selectedNeeds}</div>
+  {(entry.needs?.length > 0 || entry.needsOtherText?.trim()) && (
+  <div className="summary-chip-box">
+    <div className="summary-chip-title">내가 바랐던 것</div>
+
+    <div className="emotion-chip-wrap">
+      {(entry.needs || []).map((need) => (
+        <span key={need} className="emotion-chip">
+          {need}
+        </span>
+      ))}
+
+      {entry.needsOtherText?.trim() && (
+        <span className="emotion-chip">
+          {entry.needsOtherText.trim()}
+        </span>
+      )}
     </div>
-  ) : null}
+  </div>
+)}
 
   <BaseTextarea
     value={entry.needsEmpathy}
