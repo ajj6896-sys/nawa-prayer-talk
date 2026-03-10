@@ -1084,7 +1084,7 @@ ${(targetEntry.positive || []).join(", ") || ""}`;
 >
   {entry.negative?.length > 0 && (
     <div className="summary-chip-box">
-      <div className="summary-chip-title">선택한 감정</div>
+      <div className="summary-chip-title">💭 선택한 감정</div>
 
       <div className="emotion-chip-wrap">
         {entry.negative.map((emotion) => (
