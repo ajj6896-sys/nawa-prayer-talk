@@ -814,7 +814,7 @@ export default function App() {
   );
   const saveTimer = useRef(null);
   const [showEmotionSummary, setShowEmotionSummary] = useState(false);
-const [showNeedsSummary, setShowNeedsSummary] = useState(false);
+  const [showNeedsSummary, setShowNeedsSummary] = useState(false);
 
   const dayEntries = useMemo(() => records[currentDate] || [], [records, currentDate]);
   const selectedEmotions = entry.negative?.join(" · ") || "";
