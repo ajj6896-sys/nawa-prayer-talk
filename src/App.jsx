@@ -1192,18 +1192,21 @@ ${(targetEntry.positive || []).join(", ") || ""}`;
             subtitle="지금 느껴지는 감정을 골라보자"
           >
             <div className="stack">
-              {NEGATIVE_GROUPS.map((group, idx) => (
-                <CollapsibleGroup
-                  key={group.key}
-                  title={group.title}
-                  items={group.items}
-                  selected={entry.negative}
-                  onToggle={(item) =>
-                    updateEntry({ negative: toggleInList(entry.negative, item) })
-                  }
-                  defaultOpen={idx === 0}
-                />
-              ))}
+              {NEGATIVE_GROUPS.map((group) => (
+  <CollapsibleGroup
+    key={group.key}
+    title={group.title}
+    items={group.items}
+    selected={entry.negative}
+    onToggle={(item) =>
+      updateEntry({ negative: toggleInList(entry.negative, item) })
+    }
+    open={openEmotionGroup === group.key}
+    onToggleOpen={() =>
+      setOpenEmotionGroup((prev) => (prev === group.key ? "" : group.key))
+    }
+  />
+))}
             </div>
           </SectionCard>
           
