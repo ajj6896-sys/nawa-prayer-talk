@@ -816,6 +816,7 @@ export default function App() {
   const [showEmotionSummary, setShowEmotionSummary] = useState(false);
   const [showNeedsSummary, setShowNeedsSummary] = useState(false);
   const [showEmpathyEmotionSummary, setShowEmpathyEmotionSummary] = useState(false);
+  const [showNeedsSummaryBox, setShowNeedsSummaryBox] = useState(false);
   const dayEntries = useMemo(() => records[currentDate] || [], [records, currentDate]);
   const selectedEmotions = entry.negative?.join(" · ") || "";
 
