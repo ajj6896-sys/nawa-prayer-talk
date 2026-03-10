@@ -1111,7 +1111,7 @@ ${(targetEntry.positive || []).join(", ") || ""}`;
           <div className="card">
             <div className="card-title">백업</div>
             <div className="card-subtitle">
-              기기 변경 전에 백업 파일을 저장해두면 다시 불러올 수 있어요.
+              기기 변경 전에 백업 파일을 저장해두면 다시 불러올 수 있음
             </div>
 
             <div className="row-btns" style={{ marginTop: 12, flexWrap: "wrap" }}>
@@ -1179,7 +1179,7 @@ ${(targetEntry.positive || []).join(", ") || ""}`;
         </div>
 
         <div className="right-col">
-          <SectionCard title="✨ 오늘의 마음" subtitle="지금의 마음에 작은 이름을 붙여볼까">
+          <SectionCard title="✨ 오늘의 마음" subtitle="지금의 마음에 작은 이름을 붙여볼까?">
             <BaseInput
               value={entry.title}
               onChange={(e) => updateEntry({ title: e.target.value })}
@@ -1188,7 +1188,7 @@ ${(targetEntry.positive || []).join(", ") || ""}`;
           </SectionCard>
 
           <SectionCard
-            title="💭 지금 마음이 어때"
+            title="💭 지금 마음이 어때?"
             subtitle="지금 느껴지는 감정을 골라보자"
           >
             <div className="stack">
@@ -1211,9 +1211,8 @@ ${(targetEntry.positive || []).join(", ") || ""}`;
           </SectionCard>
           
 <SectionCard
-  title="🌿 어떤 일이 있었을까"
-  subtitle={`내 마음이 이렇게 느낀 이유를
-천천히 적어보자`}
+  title="🌿 어떤 일이 있었을까?"
+  subtitle={`내 마음이 이렇게 느낀 이유를 천천히 적어보자`}
 >
   {entry.negative?.length > 0 && (
     <div className="summary-chip-box">
@@ -1296,9 +1295,8 @@ ${(targetEntry.positive || []).join(", ") || ""}`;
 </SectionCard> 
 
           <SectionCard
-            title="🌱 마음속에서는 무엇을 바랐을까"
-            subtitle={`그 순간
-내 마음은 무엇을 바라보고 있었을까`}
+            title="🌱 마음속에서는 무엇을 바랐을까?"
+            subtitle={`그 순간 내 마음은 무엇을 바라보고 있었을까?`}
           >
             <div className="stack">
 {NEED_GROUPS.map((group) => (
@@ -1342,8 +1340,7 @@ ${(targetEntry.positive || []).join(", ") || ""}`;
 
 <SectionCard
   title="🍃 그렇구나"
-  subtitle={`그 마음이 채워지지 않아서
-속상했겠구나
+  subtitle={`그 마음이 채워지지 않아서 속상했겠구나
 
 예: 친구가 연락을 해주기를 바랐는데
 그렇지 않아서 서운했구나`}
@@ -1393,8 +1390,7 @@ ${(targetEntry.positive || []).join(", ") || ""}`;
 
           <SectionCard
             title="🕊 마음속에 있던 말"
-            subtitle={`그때 하지 못했던 말을
-편하게 적어보자`}
+            subtitle={`그때 하지 못했던 말을 편하게 적어보자`}
           >
             <BaseTextarea
               value={entry.message}
@@ -1404,7 +1400,7 @@ ${(targetEntry.positive || []).join(", ") || ""}`;
 
           <SectionCard
             title="🌼 지금의 나에게"
-            subtitle="어떤 말을 해주고 싶어"
+            subtitle="어떤 말을 해주고 싶어?"
           >
             <BaseTextarea
               value={entry.selfMessage}
@@ -1439,8 +1435,7 @@ ${(targetEntry.positive || []).join(", ") || ""}`;
           <SectionCard
             title="🙏 기도"
             subtitle={`내 힘으로 바꿀 수 없는 것은 하나님께 맡기고
-내가 한 걸음 나아갈 수 있도록
-도움을 구해보자`}
+내가 한 걸음 나아갈 수 있도록 도움을 구해보자`}
           >
             <BaseTextarea
               value={entry.prayer}
@@ -1450,8 +1445,8 @@ ${(targetEntry.positive || []).join(", ") || ""}`;
           </SectionCard>
 
           <SectionCard
-            title="🌙 지금 마음은 어때"
-            subtitle="조금 달라진 마음이 있을까"
+            title="🌙 지금 마음은 어때?"
+            subtitle="조금 달라진 마음이 있어?"
           >
             <div className="stack">
 {POSITIVE_GROUPS.map((group) => (
