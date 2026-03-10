@@ -1208,7 +1208,6 @@ ${(targetEntry.positive || []).join(", ") || ""}`;
 천천히 적어보자`}
 >
   {entry.negative?.length > 0 && (
-    {entry.negative?.length > 0 && (
   <div className="summary-chip-box">
 
     <div className="summary-chip-head">
