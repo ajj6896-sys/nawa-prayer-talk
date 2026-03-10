@@ -1330,7 +1330,7 @@ ${(targetEntry.positive || []).join(", ") || ""}`;
             </div>
           </SectionCard>
 
-          <SectionCard
+<SectionCard
   title="🍃 그렇구나"
   subtitle={`그 마음이 채워지지 않아서
 속상했겠구나
@@ -1339,24 +1339,40 @@ ${(targetEntry.positive || []).join(", ") || ""}`;
 그렇지 않아서 서운했구나`}
 >
   {(entry.needs?.length > 0 || entry.needsOtherText?.trim()) && (
-  <div className="summary-chip-box">
-    <div className="summary-chip-title">내가 바랐던 것</div>
+    <div className="summary-chip-box">
+      <div className="summary-chip-head">
+        <div className="summary-chip-title">
+          🌱 내가 바랐던 것 ({(entry.needs?.length || 0) + (entry.needsOtherText?.trim() ? 1 : 0)}개)
+        </div>
 
-    <div className="emotion-chip-wrap">
-      {(entry.needs || []).map((need) => (
-        <span key={need} className="emotion-chip">
-          {need}
-        </span>
-      ))}
+        <button
+          type="button"
+          className="summary-toggle-btn"
+          onClick={() => setShowNeedsSummaryBox((prev) => !prev)}
+        >
+          {showNeedsSummaryBox ? "접기" : "펼치기"}
+        </button>
+      </div>
 
-      {entry.needsOtherText?.trim() && (
-        <span className="emotion-chip">
-          {entry.needsOtherText.trim()}
-        </span>
-      )}
+      <div
+        className={`emotion-chip-wrap ${
+          showNeedsSummaryBox ? "expanded" : "collapsed"
+        }`}
+      >
+        {(entry.needs || []).map((need) => (
+          <span key={need} className="emotion-chip">
+            {need}
+          </span>
+        ))}
+
+        {entry.needsOtherText?.trim() && (
+          <span className="emotion-chip">
+            {entry.needsOtherText.trim()}
+          </span>
+        )}
+      </div>
     </div>
-  </div>
-)}
+  )}
 
   <BaseTextarea
     value={entry.needsEmpathy}
