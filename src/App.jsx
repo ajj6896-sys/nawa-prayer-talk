@@ -717,7 +717,7 @@ function CollapsibleGroup({ title, items, selected, onToggle, open, onToggleOpen
       <button
         type="button"
         className="collapse-head"
-        onClick={() => setOpen((v) => !v)}
+        onClick={onToggleOpen}
       >
         <div>
           <div className="collapse-title">
