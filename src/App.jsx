@@ -1454,17 +1454,21 @@ ${(targetEntry.positive || []).join(", ") || ""}`;
             subtitle="조금 달라진 마음이 있을까"
           >
             <div className="stack">
-              {POSITIVE_GROUPS.map((group) => (
-                <CollapsibleGroup
-                  key={group.key}
-                  title={group.title}
-                  items={group.items}
-                  selected={entry.positive}
-                  onToggle={(item) =>
-                    updateEntry({ positive: toggleInList(entry.positive, item) })
-                  }
-                />
-              ))}
+{POSITIVE_GROUPS.map((group) => (
+  <CollapsibleGroup
+    key={group.key}
+    title={group.title}
+    items={group.items}
+    selected={entry.positive}
+    onToggle={(item) =>
+      updateEntry({ positive: toggleInList(entry.positive, item) })
+    }
+    open={openPositiveGroup === group.key}
+    onToggleOpen={() =>
+      setOpenPositiveGroup((prev) => (prev === group.key ? "" : group.key))
+    }
+  />
+))}
             </div>
           </SectionCard>
 
