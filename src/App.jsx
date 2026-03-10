@@ -1088,19 +1088,26 @@ ${(targetEntry.positive || []).join(", ") || ""}`;
             />
           </SectionCard>
 
-          <SectionCard
-            title="🤍 그래서 그런 마음이 들었구나"
-            subtitle={`그럴 수 있어
+         <SectionCard
+  title="🤍 그래서 그런 마음이 들었구나"
+  subtitle={`그럴 수 있어
 그 상황이라면 누구라도 그렇게 느낄 수 있어
 
 예: 친구가 연락이 안 되어서
 괜히 마음이 쓰이고 걱정이 되었구나`}
-          >
-            <BaseTextarea
-              value={entry.empathy}
-              onChange={(e) => updateEntry({ empathy: e.target.value })}
-            />
-          </SectionCard>
+>
+  {selectedEmotions ? (
+    <div className="summary-chip-box">
+      <div className="summary-chip-title">선택한 감정</div>
+      <div className="summary-chip-text">{selectedEmotions}</div>
+    </div>
+  ) : null}
+
+  <BaseTextarea
+    value={entry.empathy}
+    onChange={(e) => updateEntry({ empathy: e.target.value })}
+  />
+</SectionCard>
 
           <SectionCard
             title="🌱 마음속에서는 무엇을 바랐을까"
@@ -1145,19 +1152,26 @@ ${(targetEntry.positive || []).join(", ") || ""}`;
           </SectionCard>
 
           <SectionCard
-            title="🍃 그렇구나"
-            subtitle={`그 마음이 채워지지 않아서
+  title="🍃 그렇구나"
+  subtitle={`그 마음이 채워지지 않아서
 속상했겠구나
 
 예: 친구가 연락을 해주기를 바랐는데
 그렇지 않아서 서운했구나`}
-          >
-            <BaseTextarea
-              value={entry.needsEmpathy}
-              onChange={(e) => updateEntry({ needsEmpathy: e.target.value })}
-              placeholder="그 마음을 다정하게 바라봐주자"
-            />
-          </SectionCard>
+>
+  {selectedNeeds ? (
+    <div className="summary-chip-box">
+      <div className="summary-chip-title">내가 바랐던 것</div>
+      <div className="summary-chip-text">{selectedNeeds}</div>
+    </div>
+  ) : null}
+
+  <BaseTextarea
+    value={entry.needsEmpathy}
+    onChange={(e) => updateEntry({ needsEmpathy: e.target.value })}
+    placeholder="그 마음을 다정하게 바라봐주자"
+  />
+</SectionCard>
 
           <SectionCard
             title="🕊 마음속에 있던 말"
