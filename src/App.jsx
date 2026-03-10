@@ -1257,19 +1257,34 @@ ${(targetEntry.positive || []).join(", ") || ""}`;
 괜히 마음이 쓰이고 걱정이 되었구나`}
 >
   {entry.negative?.length > 0 && (
-    <div className="summary-chip-box">
-      <div className="summary-chip-title">💭 선택한 감정</div>
-
-      <div className="emotion-chip-wrap">
-        {entry.negative.map((emotion) => (
-  <span key={emotion} className="emotion-chip">
-    {EMOTION_EMOJI[emotion] || "💭"} {emotion}
-  </span>
-))}
+  <div className="summary-chip-box">
+    <div className="summary-chip-head">
+      <div className="summary-chip-title">
+        💭 선택한 감정 ({entry.negative.length}개)
       </div>
-    </div>
-  )}
 
+      <button
+        type="button"
+        className="summary-toggle-btn"
+        onClick={() => setShowEmotionSummary((prev) => !prev)}
+      >
+        {showEmotionSummary ? "접기" : "펼치기"}
+      </button>
+    </div>
+
+    <div
+      className={`emotion-chip-wrap ${
+        showEmotionSummary ? "expanded" : "collapsed"
+      }`}
+    >
+      {entry.negative.map((emotion) => (
+        <span key={emotion} className="emotion-chip">
+          {EMOTION_EMOJI[emotion] || "💭"} {emotion}
+        </span>
+      ))}
+    </div>
+  </div>
+)}
   <BaseTextarea
     value={entry.empathy}
     onChange={(e) => updateEntry({ empathy: e.target.value })}
