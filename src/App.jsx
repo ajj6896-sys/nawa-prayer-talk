@@ -1083,18 +1083,19 @@ ${(targetEntry.positive || []).join(", ") || ""}`;
 천천히 적어보자`}
 >
   {selectedEmotions ? (
-    <div className="summary-chip-box">
-      <div className="summary-chip-title">선택한 감정</div>
-      <div className="emotion-chip-wrap">
-  {(entry.negative || []).map((emotion) => (
-    <span key={emotion} className="emotion-chip">
-      {emotion}
-    </span>
-  ))}
-</div>
-    </div>
-  ) : null}
+    {entry.negative?.length > 0 && (
+  <div className="summary-chip-box">
+    <div className="summary-chip-title">선택한 감정</div>
 
+    <div className="emotion-chip-wrap">
+      {entry.negative.map((emotion) => (
+        <span key={emotion} className="emotion-chip">
+          {emotion}
+        </span>
+      ))}
+    </div>
+  </div>
+)}
   <BaseTextarea
     value={entry.reason}
     onChange={(e) => updateEntry({ reason: e.target.value })}
