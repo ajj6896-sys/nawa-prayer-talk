@@ -1218,13 +1218,9 @@ ${(targetEntry.positive || []).join(", ") || ""}`;
       <button
         type="button"
         className="summary-toggle-btn"
-        onClick={() => setShowEmotionSummary((prev) => !prev)}
-      >
-        {showEmotionSummary ? "접기" : "펼치기"}
-      </button>
-    </div>
-
-    <div className={`emotion-chip-wrap ${showEmotionSummary ? "expanded" : "collapsed"}`}>
+        onClick={() => setShowEmpathyEmotionSummary((prev) => !prev)}
+{showEmpathyEmotionSummary ? "접기" : "펼치기"}
+className={`emotion-chip-wrap ${showEmpathyEmotionSummary ? "expanded" : "collapsed"}`}
       {entry.negative.map((emotion) => (
         <span key={emotion} className="emotion-chip">
           {EMOTION_EMOJI[emotion] || "💭"} {emotion}
