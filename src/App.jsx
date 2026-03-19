@@ -403,11 +403,12 @@ const emptyEntry = (date = todayString()) => ({
   needsOtherText: "",
   needsEmpathy: "",
   message: "",
+  replyFromOther: "",
   selfMessage: "",
   canDo: "",
   cannotDo: "",
-  prayer: "",
   positive: [],
+  prayer: "",
   createdAt: new Date().toISOString(),
   updatedAt: new Date().toISOString(),
 });
@@ -474,7 +475,6 @@ function appThemeClass(theme) {
 
 function BaseButton({ children, className = "", type = "button", onClick }) {
   return (
-    
     <button type={type} onClick={onClick} className={`btn ${className}`}>
       {children}
     </button>
@@ -570,8 +570,7 @@ function MonthCalendar({ records, currentDate, onSelectDate, monthCursor, setMon
       </div>
 
       <div className="helper-text">
-        작성한 날은 개수로 보여줘요. 
-        날짜를 누르면 그날의 기록을 볼 수 있어요.
+        작성한 날은 개수로 보여줘요. 날짜를 누르면 그날의 기록을 볼 수 있어요.
       </div>
     </div>
   );
@@ -708,7 +707,15 @@ function SectionCard({ title, children, subtitle }) {
   );
 }
 
-function CollapsibleGroup({ title, items, selected, onToggle, open, onToggleOpen }) {  const selectedCount = items.filter((item) => selected.includes(item)).length;
+function CollapsibleGroup({
+  title,
+  items,
+  selected,
+  onToggle,
+  open,
+  onToggleOpen,
+}) {
+  const selectedCount = items.filter((item) => selected.includes(item)).length;
   return (
     <div className="collapse">
       <button
@@ -812,31 +819,25 @@ export default function App() {
   );
   const saveTimer = useRef(null);
   const [showEmotionSummary, setShowEmotionSummary] = useState(false);
-  const [showNeedsSummary, setShowNeedsSummary] = useState(false);
   const [showEmpathyEmotionSummary, setShowEmpathyEmotionSummary] = useState(false);
   const [showNeedsSummaryBox, setShowNeedsSummaryBox] = useState(false);
   const [openEmotionGroup, setOpenEmotionGroup] = useState("fear");
   const [openPositiveGroup, setOpenPositiveGroup] = useState("gratitude");
   const [openNeedGroup, setOpenNeedGroup] = useState("");
   const dayEntries = useMemo(() => records[currentDate] || [], [records, currentDate]);
-  const selectedEmotions = entry.negative?.join(" · ") || "";
-
-const selectedNeeds = [
-  ...(entry.needs || []),
-  ...(entry.needsOtherChecked && entry.needsOtherText?.trim()
-    ? [entry.needsOtherText.trim()]
-    : []),
-].join(" · ");
 
   useEffect(() => {
     localStorage.setItem(THEME_KEY, theme);
   }, [theme]);
 
   useEffect(() => {
-    saveUi({ currentDate, selectedEntryId });
-    setMonthCursor(parseYmd(currentDate));
-  }, [currentDate, selectedEntryId]);
+  saveUi({ currentDate, selectedEntryId });
+}, [currentDate, selectedEntryId]);
 
+useEffect(() => {
+  setMonthCursor(parseYmd(currentDate));
+}, [currentDate]);
+  
   useEffect(() => {
     const entries = records[currentDate] || [];
 
@@ -893,7 +894,7 @@ const selectedNeeds = [
     return () => {
       if (saveTimer.current) clearTimeout(saveTimer.current);
     };
-  }, [entry, selectedEntryId, records]);
+  }, [entry, selectedEntryId]);
 
   const updateEntry = (patch) =>
     setEntry((prev) => ({
@@ -910,6 +911,9 @@ const selectedNeeds = [
   };
 
   const deleteEntry = (id) => {
+    const ok = window.confirm("이 기록을 삭제할까?");
+    if (!ok) return;
+    
     const day = records[currentDate] || [];
     const nextDay = day.filter((e) => e.id !== id);
     const nextRecords = { ...records, [currentDate]: nextDay };
@@ -955,6 +959,9 @@ ${targetEntry.message || ""}
 지금의 나에게 어떤 말을 해주고 싶어:
 ${targetEntry.selfMessage || ""}
 
+상대에게 듣고 싶었던 말:
+${targetEntry.replyFromOther || ""}
+
 할 수 없는 것:
 ${targetEntry.cannotDo || ""}
 
@@ -966,6 +973,7 @@ ${targetEntry.prayer || ""}
 
 지금 마음은 어때:
 ${(targetEntry.positive || []).join(", ") || ""}`;
+
 
     try {
       if (navigator.clipboard && window.isSecureContext) {
@@ -1320,17 +1328,20 @@ ${(targetEntry.positive || []).join(", ") || ""}`;
                     onChange={() =>
                       updateEntry({
                         needsOtherChecked: !entry.needsOtherChecked,
+                        needsOtherText: entry.needsOtherChecked ? "" : entry.needsOtherText,
                       })
                     }
                   />
                   <span>직접 적기</span>
                 </label>
 
-                <BaseInput
-                  value={entry.needsOtherText}
-                  onChange={(e) => updateEntry({ needsOtherText: e.target.value })}
-                  placeholder="떠오르는 마음을 적어보자"
-                />
+                {entry.needsOtherChecked ? (
+  <BaseInput
+    value={entry.needsOtherText}
+    onChange={(e) => updateEntry({ needsOtherText: e.target.value })}
+    placeholder="떠오르는 마음을 적어보자"
+  />
+) : null}
               </div>
             </div>
           </SectionCard>
@@ -1387,7 +1398,7 @@ ${(targetEntry.positive || []).join(", ") || ""}`;
 
           <SectionCard
             title="🕊 마음속에 있던 말"
-            subtitle={`그때 하지 못했던 말을 편하게 적어보자`}
+            subtitle={`그때 상대에게 하지 못했던 말을 편하게 적어보자`}
           >
             <BaseTextarea
               value={entry.message}
@@ -1395,6 +1406,20 @@ ${(targetEntry.positive || []).join(", ") || ""}`;
             />
           </SectionCard>
 
+          <SectionCard
+  title="💌 그럼, 그 사람이 해주길 바랐던 말은 어떤 걸까?"
+subtitle={`그때 듣고 싶었던 말을
+지금의 내가 나에게 건네보자 🌿
+
+대상이 나 자신이라면
+이 부분은 살짝 넘어가도 괜찮아 ☁️`}
+>
+            <BaseTextarea
+    value={entry.replyFromOther}
+    onChange={(e) => updateEntry({ replyFromOther: e.target.value })}
+    placeholder="예: 괜찮아, 네 마음 이해해. 네 잘못만은 아니야."
+  />
+          </SectionCard>
           <SectionCard
             title="🌼 지금의 나에게"
             subtitle="어떤 말을 해주고 싶어?"
@@ -1430,16 +1455,16 @@ ${(targetEntry.positive || []).join(", ") || ""}`;
           </SectionCard>
 
           <SectionCard
-            title="🙏 기도"
-            subtitle={`내 힘으로 바꿀 수 없는 것은 하나님께 맡기고
+  title="🙏 기도"
+  subtitle={`내 힘으로 바꿀 수 없는 것은 하나님께 맡기고
 내가 한 걸음 나아갈 수 있도록 도움을 구해보자`}
-          >
-            <BaseTextarea
-              value={entry.prayer}
-              onChange={(e) => updateEntry({ prayer: e.target.value })}
-              placeholder="기도하고 싶은 마음을 적어보자"
-            />
-          </SectionCard>
+>
+  <BaseTextarea
+    value={entry.prayer}
+    onChange={(e) => updateEntry({ prayer: e.target.value })}
+    placeholder="기도하고 싶은 마음을 적어보자"
+  />
+</SectionCard>
 
           <SectionCard
             title="🌙 지금 마음은 어때?"
