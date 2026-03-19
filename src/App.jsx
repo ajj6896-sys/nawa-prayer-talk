@@ -736,22 +736,20 @@ function CollapsibleGroup({
       {open ? (
         <div className="collapse-body">
           {items.map((item) => {
-            const id = `${title}-${item}`;
-            return (
-              <label key={item} htmlFor={id} className="check-item">
-                <BaseCheckbox
-                  id={id}
-                  checked={selected.includes(item)}
-                  onChange={() => onToggle(item)}
-                />
-                <span>
-  {EMOTION_EMOJI[item] || POSITIVE_EMOJI[item]
-    ? `${EMOTION_EMOJI[item] || POSITIVE_EMOJI[item]} ${item}`
-    : item}
-</span>
-              </label>
-            );
-          })}
+  const emoji = EMOTION_EMOJI[item] || POSITIVE_EMOJI[item];
+  const id = `${title}-${item}`;
+
+  return (
+    <label key={item} htmlFor={id} className="check-item">
+      <BaseCheckbox
+        id={id}
+        checked={selected.includes(item)}
+        onChange={() => onToggle(item)}
+      />
+      <span>{emoji ? `${emoji} ${item}` : item}</span>
+    </label>
+  );
+})}
         </div>
       ) : null}
     </div>
@@ -1292,8 +1290,8 @@ ${(targetEntry.positive || []).join(", ") || ""}`;
   <BaseTextarea
     value={entry.empathy}
     onChange={(e) => updateEntry({ empathy: e.target.value })}
-    placeholder={`예: 친구가 연락을 해주기를 바랐는데
-그렇지 않아서 서운했구나`}
+    placeholder={`예: 친구가 연락이 안 되어서
+괜히 마음이 쓰이고 걱정이 되었구나`}
   />
 </SectionCard> 
 
@@ -1413,8 +1411,8 @@ subtitle={`그때 듣고 싶었던 말을
             <BaseTextarea
     value={entry.replyFromOther}
     onChange={(e) => updateEntry({ replyFromOther: e.target.value })}
-    placeholder="예: 괜찮아, 네 마음 이해해. 
-              네 잘못만은 아니야."
+    placeholder={`예: 괜찮아, 네 마음 이해해.
+네 잘못만은 아니야.`}
   />
           </SectionCard>
           <SectionCard
