@@ -1422,7 +1422,11 @@ subtitle={`그때 듣고 싶었던 말을
           </SectionCard>
           <SectionCard
             title="🌼 지금의 나에게"
-            subtitle="어떤 말을 해주고 싶어?"
+            subtitle={`그때의 나에게 해주고 싶었던 말을
+지금의 내가 조용히 건네보자 🌿
+
+완벽하지 않아도 괜찮아
+지금의 나에게 필요한 말을 적어보자`}
           >
             <BaseTextarea
               value={entry.selfMessage}
@@ -1456,8 +1460,11 @@ subtitle={`그때 듣고 싶었던 말을
 
           <SectionCard
   title="🙏 기도"
-  subtitle={`내 힘으로 바꿀 수 없는 것은 하나님께 맡기고
-내가 한 걸음 나아갈 수 있도록 도움을 구해보자`}
+  subtitle={`내 힘으로 바꿀 수 없는 것은
+조용히 내려놓고 맡겨보자
+
+지금의 내가 한 걸음 나아갈 수 있도록
+도움을 구해도 괜찮아 🌿`}
 >
   <BaseTextarea
     value={entry.prayer}
