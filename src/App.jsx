@@ -837,23 +837,25 @@ useEffect(() => {
 }, [currentDate]);
   
   useEffect(() => {
-   const entries = records[currentDate] || [];
+    const entries = records[currentDate] || [];
 
-if (entries.length === 0) {
-  setSelectedEntryId("");
-  setEntry(emptyEntry(currentDate));
-  return;
-}
+    if (entries.length === 0) {
+      const newEntry = emptyEntry(currentDate);
+      setSelectedEntryId(newEntry.id);
+      setEntry(newEntry);
+      return;
+    }
 
-const target = entries.find((e) => e.id === selectedEntryId) || entries[0];
+    const target = entries.find((e) => e.id === selectedEntryId) || entries[0];
+    setSelectedEntryId(target.id);
 
-if (selectedEntryId !== target.id) {
-  setSelectedEntryId(target.id);
-}
+    if (JSON.stringify(target) !== JSON.stringify(entry)) {
+      setEntry(target);
+    }
+  }, [currentDate, records]);
 
-if (entry.id !== target.id || entry.date !== target.date) {
-  setEntry(target);
-}
+  useEffect(() => {
+    if (!selectedEntryId) return;
 
     const day = records[entry.date] || [];
     const prev = day.find((e) => e.id === selectedEntryId);
@@ -1531,4 +1533,5 @@ subtitle={`그때 듣고 싶었던 말을
       </div>
     </div>
   );
+}
 }
